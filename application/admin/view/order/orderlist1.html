@@ -1,0 +1,466 @@
+{include file="head" /}
+{include file="menu" /}
+<link rel="stylesheet" href="__ADMIN__/element/css/index.css">
+<style>
+    .red {
+        color: red;
+    }
+
+    .green {
+        color: green;
+    }
+
+    .el-form--inline .el-form-item__label {
+        width: 100px;
+    }
+
+    .el-form--inline .el-form-item__content {
+        width: 160px;
+    }
+
+    .el-tag--dark {
+        margin-right: 20px;
+    }
+
+    .el-table {
+        margin: 20px 0;
+    }
+
+    .el-table .el-button {
+        border: none;
+        overflow: hidden;
+        padding: 0;
+        font-size: 12px;
+    }
+    .el-table .el-button--warning{
+        padding: 6px 9px;
+    }
+    @media only screen and (max-width: 768px){
+        .el-date-editor--datetimerange.el-input__inner{
+            width:240px;
+        }
+        .el-tag--dark {
+            margin-bottom: 10px;
+        }
+    }
+    #orderTimes{
+        width:70px;
+        height:32px;
+    }
+    .endloss.el-input{
+        width:90%;
+    }
+    .endloss .el-input__inner{
+        width:80px;
+        height:32px;
+        line-height:32px;
+        padding:0;
+    }
+    .el-dialog__body .el-form{
+        margin-top:10px;
+    }
+</style>
+<section id="main-content">
+    <section class="wrapper">
+        <div id="app">
+            <el-form :inline="true" ref="form" :model="form" label-width="80px">
+                <el-form-item label="订单编号">
+                    <el-input v-model="form.oid" placeholder="输入订单编号/订单id"></el-input>
+                </el-form-item>
+                <el-form-item label="用户名">
+                    <el-input v-model="form.username" placeholder="昵称/姓名/手机号/编号"></el-input>
+                </el-form-item>
+                <el-form-item label="订单时间">
+                    <el-date-picker
+                            v-model="form.datetime"
+                            type="datetimerange"
+                            :picker-options="pickerOptions"
+                            range-separator="至"
+                            format="yyyy-MM-dd"
+                            value-format="yyyy-MM-dd"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            align="right">
+                    </el-date-picker>
+                </el-form-item>
+                <br>
+                <el-form-item label="涨跌">
+                    <el-select v-model="form.ostyle" placeholder="默认不选">
+                        <el-option label="买涨" value="1"></el-option>
+                        <el-option label="买跌" value="2"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="盈亏">
+                    <el-select v-model="form.ploss" placeholder="默认不选">
+                        <el-option label="赢利" value="1"></el-option>
+                        <el-option label="亏损" value="2"></el-option>
+                        <el-option label="无效" value="3"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="产品">
+                    <el-select v-model="form.pid" placeholder="默认不选">
+                        {volist name="pro" id="vo"}
+                        <el-option {if isset($getdata['pid']) && $getdata['pid'] == $vo['pid']} selected="selected" {/if} value="{$vo.pid}">{$vo.Name}</el-option>
+                        {/volist}
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" icon="el-icon-search" @click="onSubmit">搜索</el-button>
+                </el-form-item>
+            </el-form>
+            <el-tag v-for="item in items" :key="item.label" :type="item.type" effect="dark">
+                {{item.label}} :
+                <span v-if="item.field==='count'"> {{item.value}} 笔</span>
+                <span v-else> ￥{{item.value}}</span>
+            </el-tag>
+            <el-tag type="danger">订单多久内可修改分钟计算：</el-tag>
+            <el-select v-model="oTime" @change="changeTime()" placeholder="请选择" id="orderTimes">
+                <el-option v-for="item in orderTimes" :label="item.label" :value="item.value" :key="item.value"></el-option>
+            </el-select>
+            <el-table size="mini" :data="tableData" :default-sort="{prop: 'date', order: 'descending'}"
+                      v-loading="loading" align="center">
+                <el-table-column prop="oid" label="订单编号" align="center" fixed></el-table-column>
+                <el-table-column prop="username" label="交易账号" align="center" fixed></el-table-column>
+                <el-table-column prop="nickname" label="用户姓名" align="center" fixed></el-table-column>
+                <el-table-column prop="buytime" label="订单时间" width="180" align="center"></el-table-column>
+                <el-table-column prop="" label="产品信息" align="center">
+                    <template slot-scope="scope">
+                        <el-tooltip class="item" effect="dark" :content="scope.row.ptitle" placement="bottom">
+                            <el-button>{{scope.row.ptitle}}</el-button>
+                        </el-tooltip>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="" label="状态" align="center">
+                    <template slot-scope="scope">
+                        {{scope.row.ostaus === 1 ? '平仓' : '建仓'}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="ostyle" label="方向" align="center"></el-table-column>
+                <el-table-column prop="" label="点数" align="center">
+                    <template slot-scope="scope">
+                        {{scope.row.endprofit}}秒
+                    </template>
+                </el-table-column>
+                <el-table-column prop="buyprice" label="建仓点位" align="center"></el-table-column>
+                <el-table-column prop="" label="平仓点位">
+                    <template slot-scope="scope">
+                        <span :class="scope.row.sellprice > scope.row.buyprice ? 'red' : 'green'">{{scope.row.sellprice}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="" label="委托金额" align="center">
+                    <template slot-scope="scope">
+                        <span class="red">￥{{scope.row.fee}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="fee" label="无效委托金" align="center">
+                    <template slot-scope="scope">
+                        <span class="red">￥{{scope.row.ploss === 0 ? scope.row.fee : 0}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="" label="实际盈亏" align="center">
+                    <template slot-scope="scope">
+                        <span :class="scope.row.ploss > 0 ? 'red' : 'green'">￥{{scope.row.ploss}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="commission" label="买后余额" align="center">
+                    <template slot-scope="scope">
+                        <span class="red">￥{{scope.row.commission}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="endloss" label="盈亏比例" align="center" width="130">
+                    <template slot-scope="scope">
+                        <el-col v-if="scope.row.isEndLoss === 1">
+                            <span class="red">{{scope.row.endloss}}%</span>
+                        </el-col>
+                        <el-col v-else>
+                            <el-input class="endloss" v-model="scope.row.endloss" type="number" @keyup.enter.native="updateEndloss(scope.row)"></el-input><span style="float:right;">%</span>
+                        </el-col>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="kong_type" fixed="right" label="单个操空" width="100" align="center">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.ostaus===1">已平仓</span>
+                        <el-select v-else v-model="scope.row.kong_type" @change="onChange($event, scope.row.oid)">
+                            <el-option v-for="item in winLoss" :key="item.value" :label="item.label"
+                                       :value="item.value"></el-option>
+                        </el-select>
+                    </template>
+                </el-table-column>
+                <el-table-column fixed="right" label="操作" align="center">
+                    <template slot-scope="scope">
+                        <el-button v-if="scope.row.ostaus===1&&scope.row.isUpdate===1" type="warning" size="small"
+                                   icon="el-icon-edit" @click="update(scope.row)">修改
+                        </el-button>
+                        <span v-else>暂无操作</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination
+                    v-show="total>pagesize"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 20, 30, 50, 100]"
+                    :page-size="pagesize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+            <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+                <el-tag type="danger">注意：修改该笔订单为亏时，不要去调比例，不然余额对不上</el-tag>
+                <el-form :model="orderData">
+                    <el-form-item label="操控赢亏">
+                        <el-select v-model="orderData.is_win" @change="changeWinLoss()">
+                            <el-option v-for="item in winLoss1" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="操控比例">
+                        <el-input v-model="orderData.endloss" type="number" style="width:205px" :disabled="isDisable1"></el-input>%
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="updateOrder" :disabled="isDisable">确 定</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-dialog>
+        </div>
+    </section>
+</section>
+{include file="foot" /}
+<script src="__ADMIN__/element/js/vue.js"></script>
+<script src="__ADMIN__/element/js/index.js"></script>
+<script src="__ADMIN__/element/js/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            isWin: '',
+            oTime: 5,
+            timer: 600,
+            loading: true,
+            dialogVisible: false,
+            isDisable: false,
+            isDisable1: false,
+            currentPage: 1,
+            pagesize: 10,
+            total: 0,
+            tableData: [],
+            orderData: [],
+            form: {},
+            orderTimes:[
+                {value:0, label: 5},
+                {value:1, label: 10},
+                {value:2, label: 15},
+                {value:3, label: 20},
+            ],
+            winLoss: [{
+                value: 11,
+                label: '默认'
+            }, {
+                value: 1,
+                label: '赢'
+            }, {
+                value: 2,
+                label: '亏'
+            }],
+            winLoss1: [{
+                value: 1,
+                label: '赢'
+            }, {
+                value: 2,
+                label: '亏'
+            }],
+            items: [
+                {type: '', label: '盈亏统计', field: 'profit', value: 0},
+                {type: 'success', label: '交易笔数', field: 'count', value: 0},
+                {type: 'warning', label: '委托金额', field: 'fee', value: 0},
+                {type: 'danger', label: '有效金额', field: 'valid_fee', value: 0},
+                {type: 'info', label: '无效金额', field: 'invalid_fee', value: 0},
+            ],
+            pickerOptions: {
+                shortcuts: [{
+                    text: '今天',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '昨天',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24);
+                        end.setTime(end.getTime() - 3600 * 1000 * 24);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '最近一周',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '最近一个月',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '最近三个月',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }]
+            },
+        },
+        methods: {
+            init() {
+                let t = this, buytime, now, gap;
+                t.loading = true, t.tableData = [];
+                if(sessionStorage.getItem('oTime')){
+                    t.oTime = sessionStorage.getItem('oTime');
+                    t.timer = t.oTime * 60;
+                }
+                axios.post('getOrderList' + '?page=' + t.currentPage + '&size=' + t.pagesize, this.form).then(function (res) {
+                    t.loading = false;
+                    res.data.total > 0 ? (t.total = res.data.total, res.data.data.forEach(function (item, index) {
+                        buytime = Date.parse(item.buytime) / 1000;
+                        now = Date.parse(new Date()) / 1000;
+                        gap = now - buytime;
+                        item.isUpdate = (gap < t.timer && item.ostaus === 1) ? 1 : 0;
+                        item.isEndLoss = item.ostaus === 0 ? 0 : 1;
+                        t.$set(t.tableData, index, item);
+                    })) : (t.total = 0, t.tableData = []);
+                }).catch(function (error) {
+                });
+            },
+            orderSta() {
+                let t = this, part = {};
+                part['display'] = 0;
+                if (t.form.datetime) {
+                    part['starttime'] = t.form.datetime[0];
+                    part['endtime'] = t.form.datetime[1];
+                }
+                axios.post('ordersta', part)
+                    .then(function (res) {
+                        if (res.data) {
+                            t.items.forEach(function (item) {
+                                res.data[item.field] = res.data[item.field] === undefined ? 0 : res.data[item.field];
+                                t.$set(item, 'value', res.data[item.field]);
+                            })
+                        }
+                    })
+                    .catch(function (error) {
+                    });
+            },
+            onSubmit() {
+                this.init(), this.orderSta();
+            },
+            handleSizeChange(val) {
+                this.pagesize = val;
+                this.init();
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.init();
+            },
+            onChange(a, b) {
+                let t = this;
+                t.winLoss.forEach(function (item, index) {
+                    if (b === index) {
+                        t.ostyle = item.label;
+                    }
+                })
+                let part = {oid: b, kong_type: a};
+                axios.post('dankong', part)
+                    .then(function (res) {
+                        res.data === 1 ? t.$message({message: '操作成功', type: 'success'}) : t.$message({
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    })
+                    .catch(function (error) {
+                    });
+            },
+            update(row) {
+                let t = this, buytime, now, gap;
+                buytime = Date.parse(row.buytime) / 1000;
+                now = Date.parse(new Date()) / 1000;
+                gap = now - buytime;
+                if (gap > t.timer) {
+                    return t.$message({message: '该订单已超过时间，不能修改', type: 'error'});
+                }
+                t.isWin = row.is_win, t.dialogVisible = true, t.isDisable = false, t.isDisable1 = row.is_win === 1 ? false : true, t.orderData = row;
+            },
+            changeWinLoss(){
+                let t = this;
+                t.isDisable1 = t.orderData.is_win === 1 ? false : true;
+            },
+            updateOrder() {
+                let t = this, part;
+                if(t.orderData.is_win === t.isWin){
+                    if (t.orderData.is_win === 1) {
+                        return t.$message({message: '客户已赢，请选择亏', type: 'error'});
+                    } else {
+                        return t.$message({message: '客户已输，请选择赢', type: 'error'});
+                    }
+                    t.isDisable = true;
+                }
+                if(t.orderData.endloss == 0 || t.orderData.endloss == ''){
+                    return this.$message({message: '盈亏比例要大于0，请选择赢修改比例', type: 'error'});
+                }
+                part = {data: t.orderData};
+                axios.post('updateOrder', part)
+                    .then(function (res) {
+                        res.data === 1 ? t.$message({
+                            message: '修改成功',
+                            type: 'success'
+                        }) : t.$message({message: '修改失败,请重新提交', type: 'error'});
+                        t.dialogVisible = false, t.init()
+                    })
+                    .catch(function (error) {
+                    });
+            },
+            changeTime(){
+                let t = this;
+                t.orderTimes.forEach((item)=>{
+                    if(item.value === t.oTime){
+                        t.oTime = item.label;
+                    }
+                })
+                sessionStorage.setItem('oTime', t.oTime);
+                t.init();
+            },
+            updateEndloss(row){
+                let t = this;
+                row.endloss = row.endloss.replace(/[^\d]/g, '');
+                if(row.endloss==0 || row.endloss == ''){
+                    return t.$message({message: '盈亏比例要大于0', type: 'error'}), t.init();
+                }
+                if(row.ostaus === 0){
+                    axios.post('updateEndloss', {oid: row.oid, endloss: row.endloss})
+                        .then(function (res) {
+                            res.data === 1 ? t.$message({
+                                message: '修改成功',
+                                type: 'success'
+                            }) : t.$message({message: '修改失败,请重新提交', type: 'error'});t.init()
+                        })
+                        .catch(function (error) {
+                        });
+                }else{
+                    t.$message({message: '已平仓，不能修改盈亏比例', type: 'error'});
+                }
+            }
+        },
+        created() {
+            let t = this;
+            t.onSubmit();
+        }
+    })
+</script>

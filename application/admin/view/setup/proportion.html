@@ -1,0 +1,228 @@
+{include file="head" /}
+{include file="menu" /}
+<link rel="stylesheet" href="__ADMIN__/element/css/index.css">
+<style>
+    .red {
+        color: red;
+    }
+    .green {
+        color: green;
+    }
+    .el-dialog__body{
+        padding: 0 20px;
+    }
+    .el-alert{
+        margin: 20px 0;
+    }
+    .el-form {
+        margin-bottom: 20px;
+    }
+    .el-form .el-form-item {
+        margin-bottom: 6px;
+    }
+    .el-form .el-input,.el-form .el-textarea{
+        width: 70%;
+    }
+    .el-form .el-upload__input{
+        display: none;
+    }
+    .upload-pre-item{
+        width: 120px;
+        height: 120px;
+        border: 1px solid red;
+        text-align: center;
+        line-height: 120px;
+    }
+    img[src=""], img:not([src]), .el-upload-list{
+        display:none;
+    }
+    .el-upload-dragger{
+        width:200px;
+        height:100px;
+    }
+    .el-upload-dragger .el-icon-upload{
+        margin: 10px auto;
+    }
+    .el-upload-dragger .el-upload__text{
+        font-size: 13px;
+    }
+    .el-form-item__content{
+        line-height:30px;
+    }
+    .upload-demo{
+        float:left;
+        margin-right: 30px;
+    }
+</style>
+<section id="main-content">
+    <section class="wrapper">
+        <div id="app">
+            <el-radio-group v-model="labelPosition" size="small">
+                <el-radio-button label="left">左对齐</el-radio-button>
+                <el-radio-button label="right">右对齐</el-radio-button>
+                <el-radio-button label="top">顶部对齐</el-radio-button>
+            </el-radio-group>
+            <el-button type="primary" size="mini" @click="dialogVisible = true">管理配置</el-button>
+            <el-alert title="温馨提示：开关不需要提交，会自动提交" type="warning" :closable="false"></el-alert>
+            <el-form :label-position="labelPosition" label-width="160px" ref="form" :model="form">
+                <el-col v-for="item in data" v-if="item.type == 4">
+                    <el-form-item :label="item.title">
+                        <el-switch
+                                v-model="item.value"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                                active-text="开启"
+                                inactive-text="关闭"
+                                @change="openCard(item.value, item.id)">
+                        </el-switch>
+                    </el-form-item>
+                </el-col>
+                <el-col v-for="item in data" v-if="item.type == 1">
+                    <el-form-item :label="item.title">
+                        <el-input v-model="form[item.name]" @input="change()"></el-input> {{item.extra}}
+                    </el-form-item>
+                </el-col>
+                <el-col v-for="item in data" v-if="item.type == 2">
+                    <el-form-item  v-if="item.type == 2" :label="item.title">
+                        <el-input type="textarea" :rows="4" v-model="form[item.name]" @input="change()"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col v-for="item in data" v-if="item.type == 3">
+                    <el-form-item :label="item.title">
+                        <el-upload
+                                class="upload-demo"
+                                drag
+                                action="#"
+                                :before-upload="function(file){return uploadFile(file, item.name)}"
+                                multiple>
+                            <i class="el-icon-upload"></i>
+                            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                        </el-upload>
+                        <a :href="imgUrl[item.name]" title="查看大图" target="_blank">
+                            <img :src="imgUrl[item.name]" width="200" height="100" class="avatar">
+                        </a>
+                    </el-form-item>
+                </el-col>
+                <el-col>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit">提交</el-button>
+                    </el-form-item>
+                </el-col>
+            </el-form>
+            <el-dialog title="设置列表" :visible.sync="dialogVisible" width="50%" closable="true">
+                <el-alert title="提醒：如果 <有修改列表>，点取消或关闭窗口，请刷新页面，防止下次配置列表存在缓存" type="error" :closable="false"></el-alert>
+                <el-transfer filterable v-model="value" :data="setData" :titles="['设置列表', '已选设置']"></el-transfer>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="openCon()">确 定</el-button>
+                </div>
+            </el-dialog>
+        </div>
+    </section>
+</section>
+{include file="foot" /}
+<script src="__ADMIN__/element/js/vue.js"></script>
+<script src="__ADMIN__/element/js/index.js"></script>
+<script src="__ADMIN__/element/js/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            labelPosition: 'right',
+            dialogVisible: false,
+            form: {},
+            data: [],
+            imgUrl: {},
+            setData: [],
+            value: []
+        },
+        methods: {
+            init() {
+                let t = this, i = 0;
+                axios.post('getConfig?group=2')
+                    .then(function (res) {
+                        t.data = [];     //管理配置时减少个数，局部刷新不能同步，所以先给个空值
+                        res.data !== 1 ? Object.values(res.data).forEach((item, index)=>{
+                            t.$set(t.setData, index, {key:item.id, label:item.title})
+                            if(item.status === 1){
+                                t.value.push(item.id)
+                                if(item.type === 3){
+                                    t.$set(t.imgUrl, item.name, item.value);
+                                }else if (item.type === 4) {
+                                    if (item.value == 1) {
+                                        item.value = true;
+                                    } else {
+                                        item.value = false;
+                                    }
+                                }
+                                t.$set(t.data, i, item);
+                                i++;
+                            }
+                        }) : t.data = [];
+                        t.data.forEach((item)=>{
+                            if (item.type !== 4) {
+                                t.form[item.name] = item.value;
+                            }
+                        })
+                    })
+                    .catch(function (error) {
+                    });
+            },
+            //自定义上传图片
+            uploadFile(file, name){
+                let t = this, isImage = false, formData, config;
+                let imageType = file.type;
+                let isLt2M = file.size / 1024 / 1024 < 2;
+                isImage = imageType != 'image/jpeg' && imageType != 'image/jpg' && imageType != 'image/png' && imageType != 'image/gif' ? false : true;
+                if (!isImage) {
+                    return t.$message({message: '上传头像图片只能是 JPG/PNG/JPEG 格式!', type: 'error'});
+                }
+                if (!isLt2M) {
+                    return t.$message({message: '图片最大不能超过2M!', type: 'error'});
+                }
+                formData = new FormData();
+                formData.append('file',file);
+                config = {
+                    headers: {
+                        'Content-Type':'multipart/form-data'
+                    }
+                }
+                axios.post('upload', formData, config).then(res=>{
+                    res.data === -1 ? t.$message({message: '上传失败，请重新上传', type: 'error'}) : (t.$message({message: '上传成功', type: 'success'}), t.imgUrl[name] = res.data);
+                })
+            },
+            onSubmit(){
+                let t = this;
+                for(var prop in t.form){
+                    if(t.imgUrl[prop]){
+                        t.form[prop] = t.imgUrl[prop];
+                    }
+                }
+                axios.post("updateConf?group=2", t.form).then(function() {
+                    t.$message({message: '修改成功', type: 'success'}), t.init();
+                })
+            },
+            openCon(){
+                let t = this;
+                axios.post("openCon?group=2", {data:t.value}).then(function() {
+                    t.dialogVisible = false, t.$message({message: '修改成功', type: 'success'}), t.init();
+                })
+            },
+            openCard(a, b) {
+                let t = this, part = {};
+                part['id'] = b;
+                part['value'] = a === true ? 1 : 0;
+                axios.post("isShowKeep", part).then(function (res) {
+                    res.data === 1 ?  t.$message({message: '修改成功', type: 'success'}) : t.$message({message: '修改失败', type: 'error'});
+                })
+            },
+            change(){
+                this.$forceUpdate()
+            }
+        },
+        created() {
+            let t = this;
+            t.init();
+        }
+    })
+</script>

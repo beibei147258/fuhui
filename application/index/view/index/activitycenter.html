@@ -1,0 +1,73 @@
+{include file="comhead" /}
+<link rel="stylesheet" href="/static/index/css/common.css"/>
+<style type="text/css">
+    body {
+        background: #110e1f;
+        overflow: auto
+    }
+
+    .f_box_activity {
+        background: #111723;
+        color: #fff;
+        width: 100%;
+        text-align: center
+    }
+
+    .f_box_activity .f_isnull {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -40%);
+        height: 5.6rem;
+        width: 4.906667rem;
+        z-index: 1000;
+        display: flex
+    }
+
+    .f_box_activity .f_isnull div {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column
+    }
+
+    .f_box_activity .f_isnull div img {
+        height: 4.6rem
+    }
+
+    .f_box_activity .f_isnull div span {
+        margin-top: 10%
+    }
+</style>
+<body style="font-size: 16px;">
+<div class="tj-spinner-mask j_t_start" style="display: none;">
+    <img class="j_loading" src="/public/jpg/loading.gif" alt="">
+</div>
+<div id="app">
+    <div class="box"><!---->
+        <div class="jun-content">
+            <div class="f_box_activity">
+                <div class="t_header"><span><img src="/public/jpg/goback.png" alt=""
+                                                 onClick="javascript:history.back()"></span> <span><i>规则介绍</i></span>
+                </div>
+
+                <div><img src="/public/jpg/gz.jpg" alt="" width="100%"> <span></span></div>
+
+            </div>
+        </div>
+        {include file="footer" /}
+    </div>
+</div>
+<script type="text/javascript">
+    var head = document.getElementsByTagName('body')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = './dist/build.js?' + parseInt(Math.random() * 10000);
+    head.appendChild(script);
+    script.onload = function () {
+        document.querySelector('.j_t_start').style.display = 'none';
+    }
+</script>
+</body>
+</html>

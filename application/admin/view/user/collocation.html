@@ -1,0 +1,111 @@
+{include file="head" /}
+{include file="menu" /}
+<style>
+    .form-horizontal{
+        padding:10px 20px;
+    }
+    .form-horizontal .form-group{
+        margin-top: 15px;
+    }
+</style>
+<!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+              <h1>配置收益</h1>
+              <form class="form-horizontal" role="form" method="post" id="formid">
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">交易姓名</label>
+                      <div class="col-lg-6">
+                          <input type="text" class="form-control" name="username" value="{$data.username}" disabled="true" >
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">充值金额</label>
+                      <div class="col-lg-6">
+                          <input type="text" class="form-control" name="money" value="{$data.money}" disabled="true" >
+                      </div>
+                  </div>
+                  {if(!empty($colloc))}
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">开始时间</label>
+                      <div class="col-lg-6">
+                          <input type="text" class="form-control" value="{$colloc.starttime}" disabled="true" >
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">时间间隔</label>
+                      <div class="col-lg-6">
+                          <input type="text" class="form-control" value="{$colloc.times}" disabled="true" >
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">盈亏比例</label>
+                      <div class="col-lg-6">
+                          <input type="text" class="form-control" value="{$colloc.scale}" disabled="true" >
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-lg-offset-2 col-lg-10">
+                          <a href="{:Url('admin/user/userprice')}" class="btn btn-success">返回</a>
+                      </div>
+                  </div>
+                  {else/}
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label" id="basic-addon1">开始时间</label>
+                      <div class="col-lg-6">
+                          <input type="text"  id="datetimepicker" class="form-control" placeholder="点击选择时间" name="starttime" value="{$getdata.starttime?$getdata.starttime:''}"/>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">时间间隔</label>
+                      <div class="col-lg-6">
+                          <input type="text" class="form-control" name="times" value="">
+                      </div>
+                  </div>
+                  <div class="alert alert-block alert-danger fade in" style="margin:10px 0">
+                      <strong>注意：</strong> 如时间为：1分、3分、5分、8分，则请用字母逗号将时间分开，如输入：1,3,5,8。
+                  </div>
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">盈亏比例</label>
+                      <div class="col-lg-6">
+                          <input type="text" class="form-control" name="scale" value="">
+                      </div>
+                  </div>
+                  <div class="alert alert-block alert-danger fade in" style="margin:10px 0 0 0 ">
+                      <strong>注意：</strong> 如比例为：75%、77%，80%、85%，则请用字母逗号将比例分开，如输入：75,77,80,85。
+                  </div>
+                  <input type="hidden" name="uid" value="{$data.uid}">
+                  <input type="hidden" name="username" value="{$data.username}">
+                  <input type="hidden" name="money" value="{$data.money}">
+                  <input type="hidden" name="bpid" value="{$data.bpid}">
+                  <div class="form-group">
+                      <div class="col-lg-offset-2 col-lg-10">
+                          <input type="submit" class="btn btn-success" onclick="return execute(this.form)" value="执行">
+                      </div>
+                  </div>
+                  {/if}
+              </form>
+          </section>
+      </section>
+      <!--main content end-->
+  </section>
+{include file="foot" /}
+<script>
+    function execute(form){
+        var starttime = form.starttime.value;
+        var times = form.times.value;
+        var scale = form.scale.value;
+        if(!scale){return layer.msg('请输入盈亏比例');}
+        if(!times){return layer.msg('请输入时间间隔');}
+        if(!starttime){return layer.msg('请输入开始时间');}
+
+        var formurl = "{:Url('user/profit')}"
+        var data = $('#formid').serialize();
+        var locurl = "{:Url('admin/user/userprice')}";
+        WPpost(formurl,data,locurl);
+        return false;
+    }
+    //时间选择器
+    $('#datetimepicker').datetimepicker();
+    $('#datetimepicker_end').datetimepicker();
+</script>

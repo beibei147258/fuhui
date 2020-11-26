@@ -1,0 +1,264 @@
+{include file="comhead" /}
+<html>
+<head>
+<script type="text/javascript">
+//iOS Web APP中点击链接跳转到Safari 浏览器新标签页的问题 devework.com
+//stanislav.it/how-to-prevent-ios-standalone-mode-web-apps-from-opening-links-in-safari
+if(("standalone" in window.navigator) && window.navigator.standalone){
+    var noddy, remotes = false;
+    document.addEventListener('click', function(event) {
+        noddy = event.target;
+        while(noddy.nodeName !== "A" && noddy.nodeName !== "HTML") {
+            noddy = noddy.parentNode;
+        }
+        if('href' in noddy && noddy.href.indexOf('http') !== -1 && (noddy.href.indexOf(document.location.host) !== -1 || remotes))
+        {
+            event.preventDefault();
+            document.location.href = noddy.href;
+        }
+    },false);
+}
+</script>
+
+    <meta http-equiv="Content-Type" content="text/html;">
+    <meta http-equiv="Content-Language" content="zh-cn">
+    <meta name="apple-mobile-web-app-capable" content="no"/>
+    <meta name="apple-touch-fullscreen" content="yes"/>
+    <meta name="format-detection" content="telephone=no,email=no"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>{$conf.web_name?$conf.web_name:'福汇FXCM交易中心'}</title>
+    <link href="../../codepay/css/wechat_pay.css" rel="stylesheet" media="screen">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .jun-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            background: #111723;
+        }
+
+    .t_header {
+        height: 48px;
+        width: 100%;
+        background-color: #181f2f;
+        display: flex;
+        flex-direction: row;
+        z-index: 1000;
+    }
+
+    .t_header span:first-child {
+        width: 20px;
+        position: relative;
+    }
+
+    .t_header span:first-child img {
+        display: block;
+        width: 11.8px;
+        height: 20px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .t_header span:last-child {
+        flex: 1;
+        display: block;
+        color: #fff;
+        position: relative;
+    }
+
+    .t_header span:last-child i {
+        font-size: 19px;
+        position: absolute;
+        left: 46%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .t_box_accountrecord {
+        width: 100%;
+        flex: 1;
+        overflow-y: scroll;
+    }
+
+    .t_box_accountrecord ul {
+        display: flex;
+        flex-direction: column;
+        padding: 21px 32px;
+        font-size: 16px;
+        border-bottom: 1px solid #000;
+        color: #fff;
+        background-color: #111723;
+    }
+
+    .t_box_accountrecord ul li {
+        text-align: left;
+        height: 32px;
+    }
+
+    .t_box_accountrecord ul li span {
+        float: left;
+        display: inline-block;
+        height: 100%;
+        line-height: 32px;
+    }
+
+    .t_box_accountrecord ul li p {
+        max-width: 78%;
+        float: left;
+        word-wrap: break-word;
+        font-size: 16px;
+        height: 100%;
+        line-height: 32px;
+        margin-left: 5px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    </style>
+</head>
+
+<body>
+<!--<div class="body">-->
+<!--    <h1 class="mod-title">-->
+<!--        <span class="ico_log ico-{$type}"></span>-->
+<!--    </h1>-->
+
+<!--    <div class="mod-ct">-->
+<!--        <div class="order">-->
+<!--        </div>-->
+<!--        <div class="amount" id="money">￥{$money}</div>-->
+<!--        <div class="qrcode-img-wrapper" data-role="qrPayImgWrapper">-->
+<!--            <div data-role="qrPayImg" class="qrcode-img-area">-->
+<!--                <div class="ui-loading qrcode-loading" data-role="qrPayImgLoading" style="display: none;">加载中</div>-->
+<!--                <div style="position: relative;display: inline-block;">-->
+<!--                    <img id='show_qrcode' alt="加载中..." src="{$ewm}" width="210" height="210" style="display: block;">-->
+<!--                    -->
+<!--                </div>-->
+<!--            </div>-->
+
+
+<!--        </div>-->
+<!--        -->
+
+<!--        <div class="tip">-->
+<!--            <div class="ico-scan"></div>-->
+<!--            <div class="tip-text">-->
+<!--                <p>请使用{$typeName}扫一扫</p>-->
+<!--                <p>扫描二维码完成支付</p>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="detail" id="orderDetail">-->
+<!--            <dl class="detail-ct" id="desc" style="display: none;">-->
+
+<!--                <dt>状态</dt>-->
+<!--                <dd id="createTime">订单创建</dd>-->
+
+<!--            </dl>-->
+<!--            <a href="javascript:void(0)" class="arrow"><i class="ico-arrow"></i></a>-->
+<!--        </div>-->
+
+<!--        <div class="tip-text">-->
+<!--        </div>-->
+
+
+<!--    </div>-->
+<!--    <div class="foot">-->
+<!--        <div class="inner">-->
+<!--            <p>手机用户可保存上方二维码到手机中</p>-->
+<!--            <p>在{$typeName}扫一扫中选择"相册"即可</p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--</div>-->
+<div id="sdpay" class="jun-content">
+    <div class="t_header">
+        <span><img src="/public/jpg/goback.png" alt="" onClick="javascript:history.back()"></span>
+        <span><i>收支明细</i></span>
+    </div>
+    <div class="t_box_accountrecord">
+        <div id="app">
+            <ul v-for = "item in data">
+                <li><span>时间：</span>
+                    <p>{{item.bptime}}</p></li>
+                <li><span>类别：</span>
+                    <p>自动充值</p></li>
+                <li><span>金额：</span>
+                    <p>{{item.bpprice}}</p></li>
+                <li><span>状态：</span>
+                    <p style="color: rgb(47, 208, 164);">{{item.isverified}}</p></li>
+                <li><span>备注：</span>
+                    <p>充值</p></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+</body>
+<script src="/static/index/js/vue.min.js"></script>
+<script src="/static/index/js/jquery-3.2.1.min.js"></script>
+<script>
+    let height = document.documentElement.clientHeight
+    $('#sdpay').css('height', height + 'px')
+
+    var vue = new Vue({
+        el: '#app',
+
+        data: {
+            data: []
+        }
+
+    });
+
+    $.get('/index/index/balanceList','',function (data) {
+
+       let balance = eval('(' + data + ')');
+       $.each(balance,function (k,v) {
+           let date = v.bptime;
+           v.bptime = dateFormat("YYYY-mm-dd HH:MM", date);
+
+           if (v.bptype == 3) {
+               v.isverified = "待审核"
+           }
+
+           if (v.bptype == 2) {
+               v.isverified = "成功"
+           }
+            if (v.bptype == 4) {
+                v.isverified = "拒绝"
+            }
+       })
+       vue.data = balance;
+       console.log(vue.data);
+    });
+
+    function dateFormat(fmt, date) {
+        let d = new Date(date * 1000);
+        let ret;
+        let opt = {
+            "Y+": d.getFullYear().toString(),        // 年
+            "m+": (d.getMonth() + 1).toString(),     // 月
+            "d+": d.getDate().toString(),            // 日
+            "H+": d.getHours().toString(),           // 时
+            "M+": d.getMinutes().toString(),         // 分
+            "S+": d.getSeconds().toString()          // 秒
+            // 有其他格式化字符需求可以继续添加，必须转化成字符串
+        };
+        for (let k in opt) {
+            ret = new RegExp("(" + k + ")").exec(fmt);
+            if (ret) {
+                fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+            };
+        };
+        return fmt;
+    }
+</script>
+</html>

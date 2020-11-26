@@ -1,0 +1,53 @@
+
+{include file="headafk" /}
+<body style="font-size: 16px;">
+<div class="tj-spinner-mask j_t_start" style="display: none;">
+    <img class="j_loading" src="loading.gif" alt="">
+</div>
+<form action="/index/login/login"  method="post">
+    <div id="app">
+        <div class="t_box_login"
+             style="background-image: url('/public/jpg/background.png'); background-repeat: no-repeat;">
+            <div class="t_logo"><img src="{$conf['web_logo']}" alt=""
+                                     data-src="/public/jpg/logo-login.png" lazy="loaded"></div>
+            <div class="login_box">
+                <ul>
+                    <li>
+                        <i></i>
+                        <input type="text" placeholder="请输入用户名" onkeyup="this.value=this.value.replace(/[^A-Za-z0-9_]/, '');" onfocus="this.placeholder=''" onblur="this.placeholder='请输入用户名'" name="username" maxlength="16">
+                    </li>
+                    <li>
+                        <i></i>
+                        <input type="password" placeholder="请输入密码" onfocus="this.placeholder=''" onblur="this.placeholder='请输入密码'" name="pwd" maxlength="16">
+                    </li>
+                    <li><input type="submit" value="登陆"></li>
+                    <li><input type="button" value="会员注册" id="reg"></li>
+                </ul>
+                <p><a id="zxkf">联系客服</a></p>
+                </div>
+                   <p><a id="">　</a></p>
+                </ul>
+                <div style="text-align:center;">
+                <!--a href="https://fuhuiapp.qbumlru.cn/fuhui/index.html"style="color:#FFFFFF">APP下载</a -->
+</div>
+        </div>
+    </div>
+</form>
+<script src="/static/index/js/jquery-3.2.1.min.js"></script>
+<script>
+    $.get('/index/api/kf_link',function (res) {
+        $('#zxkf').attr('href',res);
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        $('#reg').click(
+            function(){
+                window.location.href='/index/login/register';
+            }
+        )
+    })
+</script>
+
+</body>
+</html>

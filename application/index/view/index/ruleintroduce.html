@@ -1,0 +1,98 @@
+{include file="comhead" /}
+<link rel="stylesheet" href="/static/index/css/common.css"/>
+<style type="text/css">
+    .f_box_rule {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: #111723;
+        color: #fff;
+        width: 100%;
+        text-align: center
+    }
+
+    .f_box_rule .f_content_box {
+        flex: 1;
+        position: relative;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch
+    }
+
+    .f_box_rule .f_content_box .f_content {
+        height: 96%;
+        width: 94%;
+        margin: 0 auto;
+        margin-top: .133333rem;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
+        background-size: 100% 100%;
+        display: flex;
+        justify-content: center
+    }
+
+    .f_box_rule .f_content_box .f_content .jun-img {
+        margin-top: .4rem;
+        height: 200%;
+        width: 90%
+    }
+</style>
+<body style="font-size: 16px;">
+<div class="tj-spinner-mask j_t_start" style="display: none;">
+    <img class="j_loading" src="loading.gif" alt="">
+</div>
+<div id="app">
+    <div class="box"><!---->
+        <div class="jun-content">
+            <div class="f_box_rule">
+                <div class="f_content_box">
+                    <div class="f_content"
+                         style="background:#fff;">
+                        <img src="http://whsw22.com/ipa/img/l_imgs/rule.png" alt="" class="jun-img"
+                             data-src="http://ghswxx8.com/ipa/img/l_imgs/rule.png" lazy="loaded"></div>
+                </div>
+            </div>
+        </div>
+        {include file="footer" /}
+    </div>
+</div>
+<script type="text/javascript">
+    var head = document.getElementsByTagName('body')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = './dist/build.js?' + parseInt(Math.random() * 10000);
+    head.appendChild(script);
+    script.onload = function () {
+        document.querySelector('.j_t_start').style.display = 'none';
+    }
+</script>
+<script type="text/javascript" src="./dist/build.js?7765"></script>
+
+
+<div tabindex="-1" role="dialog" aria-modal="true" aria-label="提示" class="el-message-box__wrapper"
+     style="z-index: 2001; display: none;">
+    <div class="el-message-box el-message-box--center">
+        <div class="el-message-box__header">
+            <div class="el-message-box__title"><!----><span>提示</span></div><!----></div>
+        <div class="el-message-box__content"><!---->
+            <div class="el-message-box__message"><p>请登录</p></div>
+            <div class="el-message-box__input" style="display: none;">
+                <div class="el-input"><!----><input autocomplete="off" placeholder="" type="text" rows="2"
+                                                    validateevent="true" class="el-input__inner"><!----><!----><!---->
+                </div>
+                <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+            </div>
+        </div>
+        <div class="el-message-box__btns">
+            <button type="button" class="el-button el-button--default el-button--small is-round" style="display: none;">
+                <!----><!----><span>
+          取消
+        </span></button>
+            <button type="button" class="el-button el-button--default el-button--small is-round el-button--primary ">
+                <!----><!----><span>
+          确定
+        </span></button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

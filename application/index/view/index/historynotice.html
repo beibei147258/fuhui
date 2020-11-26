@@ -1,0 +1,141 @@
+{include file="comhead" /}
+<link rel="stylesheet" href="/static/index/css/common.css"/>
+<style>
+    body {
+        background: #110e1f;
+        overflow: auto
+    }
+    .f_box_history {
+        flex: 1;
+        color: #fff;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column
+    }
+
+    .f_box_history .t_content_history {
+        flex: 1;
+        overflow-y: auto
+    }
+
+    .f_box_history .t_content_history .t_content_historyImg {
+        margin: 30% auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center
+    }
+
+    .f_box_history .t_content_history .t_content_historyImg img {
+        height: 4.666667rem
+    }
+
+    .f_box_history .t_content_history .t_content_historyImg p {
+        margin-top: .266667rem
+    }
+
+    .f_box_history .t_content_history ul {
+        display: flex;
+        flex-direction: column;
+        width: 9.4rem;
+        margin: .266666rem auto;
+        color: #999;
+        font-size: .4rem;
+        background: #181f2f;
+        text-align: left;
+        border-radius: 25px
+    }
+
+    .f_box_history .t_content_history ul li:first-child {
+        height: 1.2rem;
+        line-height: 1.2rem;
+        color: #fff;
+        font-size: .48rem;
+        padding-left: .373333rem
+    }
+
+    .f_box_history .t_content_history ul li:nth-child(2) {
+        height: 100%;
+        border-bottom: 1px solid #000;
+        border-top: 1px solid #000;
+        padding-top: .666666rem;
+        padding-left: .373333rem
+    }
+
+    .f_box_history .t_content_history ul li:nth-child(2) p {
+        margin-bottom: .266666rem;
+        line-height: 50px
+    }
+
+    .f_box_history .t_content_history ul li:nth-child(2) .l_noticeContent {
+        text-indent: 2em;
+        margin-bottom: 10px
+    }
+
+    .f_box_history .t_content_history ul li:nth-child(3) {
+        height: 1.2rem;
+        line-height: 1.2rem;
+        padding-left: .373333rem
+    }
+</style>
+<body style="font-size: 16px;">
+    <div class="tj-spinner-mask j_t_start" style="display: none;">
+        <img class="j_loading" src="/public/jpg/loading.gif" alt="">
+    </div>
+    <div id="app">
+        <div class="box">
+            <div class="jun-content">
+                <div class="f_box_history">
+                    <div class="t_header">
+                        <span><img src="/public/jpg/goback.png" alt="" onClick="javascript:history.back()"></span>
+                        <span><i>平台公告</i></span>
+                    </div>
+                    <div class="t_content_history">
+                        <ul>
+                            {$conf['web_gonggao']}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {include file="footer" /}
+        </div>
+    </div>
+    <div tabindex="-1" role="dialog" aria-modal="true" aria-label="提示" class="el-message-box__wrapper"
+         style="z-index: 2001; display: none;">
+        <div class="el-message-box el-message-box--center">
+            <div class="el-message-box__header">
+                <div class="el-message-box__title"><!----><span>提示</span></div><!----></div>
+            <div class="el-message-box__content"><!---->
+                <div class="el-message-box__message"><p>请登录</p></div>
+                <div class="el-message-box__input" style="display: none;">
+                    <div class="el-input"><!----><input autocomplete="off" placeholder="" type="text" rows="2"
+                                                        validateevent="true" class="el-input__inner"><!----><!----><!---->
+                    </div>
+                    <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+                </div>
+            </div>
+            <div class="el-message-box__btns">
+                <button type="button" class="el-button el-button--default el-button--small is-round" style="display: none;">
+                    <!----><!----><span>
+              取消
+            </span></button>
+                <button type="button" class="el-button el-button--default el-button--small is-round el-button--primary ">
+                    <!----><!----><span>
+              确定
+            </span></button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    var head = document.getElementsByTagName('body')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = '' + parseInt(Math.random() * 10000);
+    head.appendChild(script);
+    script.onload = function () {
+        document.querySelector('.j_t_start').style.display = 'none';
+    }
+</script>

@@ -1,0 +1,299 @@
+{include file="head" /}
+{include file="menu" /}
+<link rel="stylesheet" href="__ADMIN__/element/css/index.css">
+<style>
+    .red {
+        color: red;
+    }
+
+    .green {
+        color: green;
+    }
+
+    .el-alert{
+        margin: 10px 0;
+    }
+
+    .el-alert.tip{
+        margin: 10px 0 10px 160px;
+        width: 80%;
+    }
+
+    .el-form {
+        margin-bottom: 20px;
+    }
+
+    .el-form .el-form-item {
+        margin-bottom: 10px;
+    }
+
+    .el-form .el-input, .el-form .el-textarea {
+        width: 80%;
+    }
+
+    .el-form .el-upload__input {
+        display: none;
+    }
+
+    .upload-pre-item {
+        width: 120px;
+        height: 120px;
+        border: 1px solid red;
+        text-align: center;
+        line-height: 120px;
+    }
+
+    img[src=""], img:not([src]), .el-upload-list--text{
+        display: none;
+    }
+
+    .el-upload-list--picture li{
+        float: left;
+    }
+
+    .el-upload-dragger {
+        width: 200px;
+        height: 100px;
+    }
+
+    .el-upload-dragger .el-icon-upload {
+        margin: 10px auto;
+    }
+
+    .el-upload-dragger .el-upload__text {
+        font-size: 13px;
+    }
+
+    .el-form-item__content {
+        line-height: 30px;
+    }
+
+    .upload-demo {
+        float: left;
+        margin-right: 30px;
+    }
+    ul.left{
+        float:left;
+        width:100%;
+    }
+    ul.left li{
+        float: left;
+        width: 50%;
+    }
+    ul.left li span{
+        display: inline-block;
+        margin-right: -8px;
+        width: 60px;
+        height: 38px;
+        line-height: 38px;
+        border:1px solid #DCDFE6;
+        border-right: none;
+        border-radius: 4px;
+        background-color: #eee;
+        vertical-align: middle;
+        text-align: center;
+    }
+    ul.left li .el-input__inner{
+        display: inline-block;
+        width:98%;
+        vertical-align: middle;
+    }
+</style>
+<section id="main-content">
+    <section class="wrapper">
+        <div id="app">
+            <el-alert title="{$pid?'编辑':'添加'}产品" type="warning" :closable="false" style="font-size:16px;font-weight: bold;"></el-alert>
+            <el-form label-width="160px" ref="form" :model="form">
+                <el-form-item label="产品名称">
+                    <el-input v-model="form.ptitle" @input="change()" placeholder="请输入产品名称"></el-input>
+                </el-form-item>
+                <el-form-item label="初始值">
+                    <el-input v-model="form.point" @input="change()" placeholder="请输入初始值"></el-input>
+                </el-form-item>
+                <el-form-item label="产品图标">
+                    <el-upload
+                            class="upload-demo"
+                            drag
+                            action="#"
+                            :before-upload="function(file){return uploadFile(file, 'img')}"
+                            multiple>
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                    </el-upload>
+                    <el-link v-if="form.img != ''" :href="form.img" target="_blank">
+                        <el-image :src="form.img" style="width: 100px; height: 100px"></el-image>
+                    </el-link>
+                </el-form-item>
+                <el-form-item label="产品波动范围">
+                    <ul class="left">
+                        <li>
+                            <span>最小值</span>
+                            <el-input v-model="form.point_low" @input="change()" placeholder="请输入最小值"></el-input>
+                        </li>
+                        <li>
+                            <span>最大值</span>
+                            <el-input v-model="form.point_top" @input="change()" placeholder="请输入最大值"></el-input>
+                        </li>
+                    </ul>
+                </el-form-item>
+                <el-alert
+                        class="tip"
+                        title="注意：客户订单在条件范围内时，会根据订单的涨或跌，自动减或加最小值与最大值之间的随机数"
+                        type="error"
+                        :closable="false">
+                </el-alert>
+                <el-form-item label="产品代码">
+                    <el-input v-model="form.procode" @input="change()" placeholder="请输入产品代码"></el-input>
+                </el-form-item>
+                <el-form-item label="时间玩法间隔">
+                    <el-input v-model="form.protime" @input="change()" placeholder="请输入时间玩法间隔"></el-input>
+                </el-form-item>
+                <el-alert
+                        class="tip"
+                        title="注意：如时间为：1分、3分、5分、8分，则请用字母逗号将时间分开，如输入：1,3,5,8。如没有此玩法则留空。必须为四个"
+                        type="error"
+                        :closable="false">
+                </el-alert>
+                <el-form-item label="盈亏比例">
+                    <el-input v-model="form.proscale" @input="change()" placeholder="请输入盈亏比例"></el-input>
+                </el-form-item>
+                <el-alert
+                        class="tip"
+                        title="注意：如比例为：75%、77%，80%、85%，则请用字母逗号将比例分开，如输入：75,77,80,85。必须为四个，且不得为空"
+                        type="error"
+                        :closable="false">
+                </el-alert>
+                <el-form-item label="开市时间">
+                    <ul class="left">
+                        <li v-for="item in form.opentime">
+                            <span>{{item.name}}</span>
+                            <el-input v-model="item.value" @input="change()" placeholder="如：00:00~03:00|08:00~24:00"></el-input>
+                        </li>
+                    </ul>
+                </el-form-item>
+                <el-alert
+                        class="tip"
+                        title="注意：开市时间为00:00~18:00则输入 00:00~18:00 开市时间为00:00~03:00 和 08:00~24:00;则输入
+                               如：00:00~03:00|08:00~24:00 不得出现中文符号，全天不开市请留空,时间一定要填写准确"
+                        type="error"
+                        :closable="false">
+                </el-alert>
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit">提交</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+    </section>
+</section>
+{include file="foot" /}
+<script src="__ADMIN__/element/js/vue.js"></script>
+<script src="__ADMIN__/element/js/index.js"></script>
+<script src="__ADMIN__/element/js/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            pid: "{$pid}",
+            timeOut: '',
+            form: {
+                pid: '',
+                ptitle: '',
+                point: '',
+                point_low: '',
+                point_top: '',
+                img: '',
+                procode: '',
+                proscale: '',
+                opentime: [
+                    {name: '周一', value: ''},
+                    {name: '周二', value: ''},
+                    {name: '周三', value: ''},
+                    {name: '周四', value: ''},
+                    {name: '周五', value: ''},
+                    {name: '周六', value: ''},
+                    {name: '周日', value: ''},
+                ],
+            },
+            productinfo: []
+        },
+        methods: {
+            init() {
+                let t = this;
+                axios.post("{:url('/admin/goods/exitProduct',array('pid'=>$pid))}")
+                    .then(function (res) {
+                        t.form = res.data;
+                    })
+                    .catch(function (error) {
+                    });
+            },
+            //自定义上传图片
+            uploadFile(file, name) {
+                let t = this, isImage = false, formData, config;
+                let imageType = file.type;
+                let isLt2M = file.size / 1024 / 1024 < 2;
+                isImage = imageType != 'image/jpeg' && imageType != 'image/jpg' && imageType != 'image/png' && imageType != 'image/gif' ? false : true;
+                if (!isImage) {
+                    return t.$message({message: '上传头像图片只能是 JPG/PNG/JPEG 格式!', type: 'error'});
+                }
+                if (!isLt2M) {
+                    return t.$message({message: '图片最大不能超过2M!', type: 'error'});
+                }
+                formData = new FormData();
+                formData.append('file', file);
+                config = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+                axios.post('/admin/goods/upload', formData, config).then(res => {
+                    res.data === -1 ? t.$message({message: '上传失败，请重新上传', type: 'error'}) : (t.$message({
+                        message: '上传成功',
+                        type: 'success'
+                    }), t.form[name] = res.data);
+                })
+            },
+            onSubmit() {
+                let t = this;
+                if(t.form.ptitle === '' || t.form.ptitle === null){
+                    return t.$message({message: '请输入产品名称', type: 'error'});
+                }
+                if(t.form.point === '' || t.form.point === null){
+                    return t.$message({message: '请输入初始值', type: 'error'});
+                }
+                if(t.form.img === '' || t.form.img === null){
+                    return t.$message({message: '请输入产品图标', type: 'error'});
+                }
+                if(t.form.point_low === '' || t.form.point_low === null){
+                    return t.$message({message: '请输入产品波动最小值', type: 'error'});
+                }
+                if(t.form.point_top === '' || t.form.point_top === null){
+                    return t.$message({message: '请输入产品波动最大值', type: 'error'});
+                }
+                if(t.form.procode === '' || t.form.procode === null){
+                    return t.$message({message: '请输入产品代码', type: 'error'});
+                }
+                if(t.form.protime === '' || t.form.protime === null){
+                    return t.$message({message: '请输入时间玩法间隔', type: 'error'});
+                }
+                if(t.form.proscale === '' || t.form.proscale === null){
+                    return t.$message({message: '请输入盈亏比例', type: 'error'});
+                }
+                axios.post("/admin/goods/exitProduct", t.form).then(function (res) {
+                    t.timeOut = res.data.type===1 ? (t.$message({message: res.data.msg, type: 'success'}), setTimeout(() => {window.location.href='/admin/goods/prolist'}, 1000)) : (t.$message({message: res.data.msg, type: 'error'}), '');
+                })
+            },
+            change() {
+                this.$forceUpdate()
+            }
+        },
+        created() {
+            let t = this;
+            if(t.pid != ''){
+                t.init();
+            }
+            if (t.timeOut) {
+                clearTimeout(t.timeOut);
+            }
+        }
+    })
+</script>

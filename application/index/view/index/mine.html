@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta name="description" content="不超过150个字符">
+    <meta name="keywords" content="">
+    <meta content="caibaojian" name="author">
+    <link rel="icon" type="image/x-icon" href="./jun.ico">
+    <title>{$conf.web_name?$conf.web_name:'福汇FXCM交易中心'}</title>
+    <link rel="stylesheet" href="/static/index/css/common.css">
+    <style>
+
+    </style>
+</head>
+<body style="font-size: 16px;">
+<div class="tj-spinner-mask j_t_start" style="display: none;">
+    <img class="j_loading" src="/public/jpg/loading.gif" alt="">
+</div>
+<div id="app">
+    <div class="box"><!---->
+        <div class="jun-content">
+            <div class="f_box_mine slide">
+                <div class="t_header">
+                    <span><img src="/public/jpg/goback.png" alt="" onClick="javascript:history.back()"></span>
+                    <span><i>个人中心</i></span>
+                </div>
+                <div class="f_mine_box">
+                    <div class="f_mine" style="">
+                        <div class="img_cion">
+                            <img src="{$conf['web_logo']}" alt="" class="f_mine_header"
+                                 data-src="/public/jpg/logo-login.png" lazy="loaded"> <!----><!---->
+                        </div>
+                        <p><span>{$userInfo['utel']} ({$userInfo['nickname']})</span></p>
+                        <!--会员等级-->
+                        <p class="pthy" style="background-image: url('{$src}');">
+                            <strong style="font-size: 17px; margin-left: 1.5rem;">{$userInfo['hydj']}</strong>
+                        </p>
+                        <!--  <p>{$userInfo['utel']}</p></div> -->
+                        <div class="f_tab1">
+                            <span><p>￥{$userInfo['usermoney']}</p> <p>可用余额</p></span>
+                            <!--<span><p>0.00</p> <p>可用赢家券</p></span> -->
+                        </div>
+
+                        <marquee><font color=#ffffff>{$conf['web_gg']}</font></marquee>
+                        <div class="f_tab2">
+                            <span><a href="/index/index/pay" class=""><p>充值</p></a></span>
+                            <span><a href="/index/index/withdraw" class=""><p>提现</p></a></span>
+                        </div>
+                        <div class="f_table">
+                            <div class="el-col el-col-6" id="i2">
+                                <a href="/index/index/inquiries" class="">
+                                    <img src="/public/jpg/icon_my_search@2x.png" alt="" class="i2"
+                                         data-src="/public/jpg/icon_my_search@2x.png" lazy="loaded">
+                                    <p>平仓查询</p>
+                                </a>
+                            </div>
+                            <div class="el-col el-col-6" id="i3">
+                                <a href="/index/index/accountrecord" class="">
+                                    <img src="/public/jpg/icon_my_revenue_and_expenditure@2x.png" alt="" class="i3"
+                                         data-src="/public/jpg/icon_my_revenue_and_expenditure@2x.png" lazy="loaded">
+                                    <p>收支明细</p></a>
+                            </div>
+
+                            <div class="el-col el-col-6" id="i6">
+                                <a href="/index/index/historynotice" class="">
+                                    <img src="/public/jpg/icon_my_announcement@2x.png" alt="" class="i6"
+                                         data-src="/public/jpg/icon_my_announcement@2x.png" lazy="loaded">
+                                    <p>平台公告</p>
+                                </a>
+                            </div>
+                            {if $conf['keep_card'] == 1}
+                            <div class="el-col el-col-6" id="i7">
+                                <a href="/index/index/bankcard" class="">
+                                    <img src="/public/jpg/icon_my_bank_card@2x.png" alt="" class="i7"
+                                         data-src="/public/jpg/icon_my_bank_card@2x.png" lazy="loaded">
+                                    <p>银行卡</p>
+                                </a>
+                            </div>
+                            {/if}
+                            {if $userInfo.otype == 101}
+                            <div class="el-col el-col-6" id="i8">
+                                <a href="/index/user/ercode" class="">
+                                    <img src="/public/jpg/icon_my_agency@2x.png" alt="" class="i8"
+                                         data-src="/public/jpg/icon_my_agency@2x.png" lazy="loaded">
+                                    <p>推广码</p>
+                                </a>
+                            </div>
+                            {/if}
+                            <div class="el-col el-col-6" id="i9">
+                                <a href="{$conf['kfs']}" class="">
+                                    <img src="/public/jpg/icon_my_vouchers@2x.png" alt="" class="i9"
+                                         data-src="/public/jpg/icon_my_cipher@2x.png" lazy="loaded">
+                                    <p>在线客服</p>
+                                </a>
+                            </div>
+                            <div class="el-col el-col-6">
+                                <a href="/index/index/moditypwd" class="">
+                                    <img src="/public/jpg/icon_my_cipher@2x.png" alt=""
+                                         data-src="/public/jpg/icon_my_agency@2x.png" lazy="loaded">
+                                    <p>修改密码</p>
+                                </a>
+                            </div>
+                            {if $conf.is_about == 1}
+                            <div class="el-col el-col-6" id="i6">
+                                <a href="/index/index/gywm" class="">
+                                    <img src="/public/jpg/icon_my_agency@2x.png" alt="" class="i6"
+                                         data-src="/public/jpg/icon_my_announcement@2x.png" lazy="loaded">
+                                    <p>关于我们</p>
+                                </a>
+                            </div>
+                            {/if}
+                            <div class="el-col el-col-6" id="i6">
+                                <a href="/index/index/mail" class="">
+
+                                    <img src="/public/jpg/youx.png" alt="" class="i6" data-src="/public/jpg/youx.png"
+                                         lazy="loaded">
+                                    <p>站内信息({$mailcount})</p>
+                                </a>
+                            </div>
+                            <div class="el-col el-col-6" id="i6">
+                                <a href="/index/index/myxyf" class="">
+
+                                    <img src="/public/jpg/xyf.png" alt="" class="i6" data-src="/public/jpg/youx.png"
+                                         lazy="loaded">
+                                    <p>我的信用分</p>
+                                </a>
+                            </div>
+                            {if $conf.show_app == 1}
+                            <div class="el-col el-col-6" id="i6">
+                                <a id="webapp" href="javascript:alert('正在开发中');">
+                                    <img src="/public/jpg/app.png" alt="" class="i6"
+                                         data-src="/public/jpg/icon_my_announcement@2x.png" lazy="loaded">
+                                    <p>app下载</p>
+                                </a>
+                            </div>
+                            {/if}
+                            <div class="el-col el-col-6">
+                                <div><a href="/index/index/loginout" class=""><img
+                                        src="/public/jpg/icon_my_pull_out@2x.png" alt=""
+                                        data-src="/public/jpg/icon_my_pull_out@2x.png"
+                                        lazy="loaded">
+
+                                    <p>退出登录</p></a></div>
+                            </div>
+                        </div>
+                        <div class="jun-empty"></div>
+                    </div>
+                </div>
+            </div>
+            {include file="footer" /}
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script src="/static/public/js/inline.js"></script>
+<script>
+    if (("standalone" in window.navigator) && window.navigator.standalone) {
+        var noddy, remotes = false;
+        document.addEventListener('click', function (event) {
+            noddy = event.target;
+            while (noddy.nodeName !== "A" && noddy.nodeName !== "HTML") {
+                noddy = noddy.parentNode;
+            }
+            if ('href' in noddy && noddy.href.indexOf('http') !== -1 && (noddy.href.indexOf(document.location.host) !== -1 || remotes)) {
+                event.preventDefault();
+                document.location.href = noddy.href;
+            }
+        }, false);
+    }
+    $(function () {
+        var arrHost = window.location.host.split('.');
+        var url = 'https://' + arrHost[0] + 'app.' + arrHost[1] + '.' + arrHost[2] + '/fuhui/index.html';
+        $("a#webapp").attr("href", url)
+    })
+</script>

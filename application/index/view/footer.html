@@ -1,0 +1,15 @@
+<div class="footer">
+    <div><a href="/index/index/home" class="t_span"><i></i><span>首页</span></a></div>
+    <div><a href="/index/index/pay" class="t_span"><i></i><span>充值</span></a></div>
+    <div><a href="/index/order/hold.html" class="t_span"><i></i><span>持仓</span></a></div>
+    <div><a id="zxkf" class="t_span"><i></i><span>咨询</span></a></div>
+    <div><a href="/index/index/member" class="t_span"><i></i><span>我的</span></a></div>
+</div>
+
+<script src="/static/index/js/jquery-3.2.1.min.js"></script>
+<script src="/static/layer/layer.js"></script>
+<script>
+    $.get('/index/api/kf_link',function (res) {
+        $('#zxkf').attr('href',res);
+    });
+</script>

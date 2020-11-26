@@ -1,0 +1,250 @@
+{include file="comhead" /}
+<link rel="stylesheet" href="/static/index/css/common.css"/>
+<style type="text/css">
+    body {
+        background: #110e1f;
+        overflow: auto;
+    }
+
+    .dk-spinner-mask {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: #fff;
+        opacity: .4;
+        z-index: 2090
+    }
+
+    .dk-spinner-three-bounce.dk-spinner {
+        position: absolute;
+        top: 53%;
+        left: 47%;
+        background-color: none !important;
+        z-index: 2099;
+        margin: 0 auto;
+        width: 70px;
+        text-align: center
+    }
+
+    .dk-spinner-three-bounce div {
+        width: .24rem;
+        height: .24rem;
+        background-color: #1ab394;
+        border-radius: 100%;
+        display: inline-block;
+        -webkit-animation: dk-threeBounceDelay 1.4s infinite ease-in-out;
+        animation: dk-threeBounceDelay 1.4s infinite ease-in-out;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both
+    }
+
+    .dk-spinner-three-bounce .dk-bounce1 {
+        -webkit-animation-delay: -.32s;
+        animation-delay: -.32s
+    }
+
+    .dk-spinner-three-bounce .dk-bounce2 {
+        -webkit-animation-delay: -.16s;
+        animation-delay: -.16s
+    }
+
+    @-webkit-keyframes dk-threeBounceDelay {
+        0%, 80%, to {
+            -webkit-transform: scale(0);
+            transform: scale(0)
+        }
+        40% {
+            -webkit-transform: scale(1);
+            transform: scale(1)
+        }
+    }
+
+    @keyframes dk-threeBounceDelay {
+        0%, 80%, to {
+            -webkit-transform: scale(0);
+            transform: scale(0)
+        }
+        40% {
+            -webkit-transform: scale(1);
+            transform: scale(1)
+        }
+    }
+
+    .t_box_hold {
+        flex: 1;
+        display: flex;
+        flex-direction: column
+    }
+
+    .t_box_hold .t_con_hold {
+        flex: 1;
+        background-color: #111723;
+        overflow-y: auto;
+        color: #fff;
+        position: relative
+    }
+
+    .t_box_hold .t_con_hold .dataNo {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -40%);
+        height: 5.6rem;
+        width: 4.906667rem;
+        z-index: 1000
+    }
+
+    .t_box_hold .t_con_hold .dataNo img {
+        width: 100%
+    }
+
+    .t_box_hold .t_con_hold .dataNo h3 {
+        text-align: center;
+        height: 1.333333rem;
+        line-height: 1.333333rem;
+        color: #9a9a9c;
+        font-size: .4rem;
+        font-weight: 400
+    }
+
+    .t_box_hold .t_con_hold .dataNo button {
+        width: 2.666667rem;
+        border: none;
+        font-size: .48rem;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        color: #2c86ff;
+        background-color: #111723
+    }
+
+    .t_box_hold .t_con_hold .chunk {
+        height: 4rem;
+        border-bottom: .026667rem solid #000;
+        display: flex;
+        flex-direction: column
+    }
+
+    .t_box_hold .t_con_hold .chunk ul {
+        margin-top: .2rem;
+        height: .533333rem;
+        display: flex;
+        flex-direction: row
+    }
+
+    .t_box_hold .t_con_hold .chunk ul li {
+        flex: 1;
+        font-size: .4rem
+    }
+
+    .t_box_hold .t_con_hold .chunk ul li:first-child {
+        text-align: center;
+        text-indent: .533333rem
+    }
+
+    .t_box_hold .t_con_hold .chunk ul li:nth-child(2) {
+        text-align: center;
+        line-height: .533333rem
+    }
+
+    .t_box_hold .t_con_hold .chunk ul li:last-child {
+        text-align: center;
+        color: red
+    }
+
+    .t_box_hold .t_con_hold .chunk p {
+        margin-top: .133333rem;
+        text-indent: .746667rem
+    }
+
+    .t_box_hold .t_con_hold .chunk .time {
+        color: #999;
+        font-size: .32rem
+    }
+
+    .t_box_hold .t_con_hold .chunk .t_br {
+        width: 8.4rem;
+        margin: 0 auto;
+        overflow: visible
+    }
+
+    .t_box_hold .t_con_hold .chunk .t_br .el-progress-bar {
+        overflow: visible;
+        background-color: #111723
+    }
+
+    .t_box_hold .t_con_hold .chunk .t_br .el-progress-bar .el-progress-bar__outer {
+        background-color: #111723
+    }
+
+    .t_box_hold .t_con_hold .chunk .t_br .el-progress-bar .el-progress-bar__outer .el-progress-bar__inner {
+        position: relative;
+        overflow: visible;
+        background-color: #111723
+    }
+
+    .t_box_hold .t_con_hold .chunk .t_br .el-progress-bar .el-progress-bar__outer .el-progress-bar__inner .el-progress-bar__innerText {
+        position: absolute;
+        top: 50%;
+        right: 1%;
+        transform: translateY(-50%);
+        font-size: .26rem;
+        color: #fff
+    }
+
+    .t_box_hold .t_con_hold .chunk .t_bar {
+        width: 8.4rem;
+        margin: 0 auto
+    }
+
+    .t_box_hold .t_con_hold .chunk .t_bar .el-progress-bar .el-progress-bar__outer {
+        background-color: #a886c8
+    }
+
+    .t_box_hold .t_con_hold .chunk .t_bar .el-progress-bar .el-progress-bar__outer .el-progress-bar__inner {
+        position: relative;
+        background-color: #ff581e
+    }
+
+    .t_box_hold .t_con_hold .chunk .t_bar .el-progress-bar .el-progress-bar__outer .el-progress-bar__inner.el-progress-bar__innerText {
+        font-size: .266667rem;
+        color: #fff
+    }</style>
+<style type="text/css"></style>
+</head>
+<body style="font-size: 16px;">
+<div class="tj-spinner-mask j_t_start" style="display: none;">
+    <img class="j_loading" src="loading.gif" alt="">
+</div>
+<div id="app">
+    <div class="box">
+        <div class="jun-content">
+            <div class="t_box_hold slide">
+                <div class="t_header">
+                    <span><img src="/public/jpg/goback.png" alt="" onClick="javascript:history.back()"></span>
+                    <span><i>明细</i></i></span>
+                </div>
+                <div class="t_con_hold">
+                    <div class="dataNo" style=""><img src="/public/jpg/postion.png" alt="">
+                        <h3>正在结汇</h3>
+                        <button>请稍后查询</button>
+                    </div>
+                </div>
+                <div style="display: none;">
+                    <div class="dk-spinner-mask"></div>
+                    <div class="dk-spinner dk-spinner-three-bounce">
+                        <div class="dk-bounce1"></div>
+                        <div class="dk-bounce2"></div>
+                        <div class="dk-bounce3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {include file="footer" /}
+    </div>
+</div>
+<script src="/static/public/js/inline.js"></script>
+</body>
+</html>

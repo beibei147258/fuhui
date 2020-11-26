@@ -1,0 +1,91 @@
+<div class="footer">
+    <div><a href="/index/index/home" class="t_span"><i></i><span>首页</span></a></div>
+    <div><a href="/index/index/pay" class="t_span"><i></i><span>充值</span></a></div>
+    <div><a href="/index/order/hold.html" class="t_span"><i></i><span>持仓</span></a></div>
+    <div><a class="t_span" id="zxkf"><i></i><span>咨询</span></a></div>
+    <div><a href="/index/index/member" class="t_span"><i></i><span>我的</span></a></div>
+</div>
+<div class="router-button__Wrapper-sc-1xlmfkg-0" id="jDKtMA">
+    <a id="zxkf1">
+        <div class="frame-button-content__Wrapper-sc-1td9tx7-0 eRtaBq">
+            <div class="frame-button-content__RoundWrapper-sc-1td9tx7-3 LOaHP">
+                <label class="icon__Span-sc-5foskt-0 cSUETK">
+                    <span type="chat-button-1" width="32px" height="32px" class="base-icon__Container-sc-1ajxhaa-0 ihFnZp"></span>
+                </label>
+            </div>
+        </div>
+    </a>
+</div>
+<style>
+#jDKtMA{
+    height: 62px;
+    width: 62px;
+    position:absolute;
+    left: 0;
+    bottom: 0;
+    z-index:99999;
+}
+#jDKtMA #zxkf{
+    height: 100%;
+    width: 100%;
+}
+.eRtaBq {
+    height: 100%;
+    width: 100%;
+    background-color: rgb(0, 122, 255);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 14px;
+    position: relative;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 50%;
+}
+.LOaHP {
+    padding-top: 19px;
+}
+.LOaHP {
+    padding-top: 19px;
+}
+.eRtaBq label {
+    cursor: pointer;
+}
+.ihFnZp {
+    vertical-align: middle;
+    padding-right: 32px;
+    height: 32px;
+    display: inline-block;
+    background: url(https://static.meiqia.com/widget/static/icon-mq-round@2x.png) 0px -3px / 64px no-repeat;
+    background-position: 0px -3px;
+}
+</style>
+<script src="/static/index/js/jquery-3.2.1.min.js"></script>
+<script src="/static/layer/layer.js"></script>
+<script>
+    var div = document.getElementById('jDKtMA');
+    div.addEventListener('touchmove', function(event) {
+        event.preventDefault();//阻止其他事件
+        // 如果这个元素的位置内只有一个手指的话
+        if (event.targetTouches.length == 1) {
+            var touch = event.targetTouches[0];  // 把元素放在手指所在的位置
+            var x = touch.pageX;
+            var y = touch.pageY;
+            var maxW = document.body.clientWidth - div.offsetWidth;
+            var maxH = document.body.clientHeight - div.offsetHeight;
+            if(x <= 0){
+                x = 0;
+            }else if(x >= maxW){
+                x = maxW;
+            }
+            if(y <=0 ){
+                y = 0
+            }else if(y >= maxH){
+                y= maxH;
+            }
+            div.style.left = x + 'px';
+            div.style.top = y + 'px';
+        }
+    }, false);
+    $.get('/index/api/kf_link',function (res) {
+        $('#zxkf').attr('href',res);
+        $('#zxkf1').attr('href',res);
+    });
+</script>

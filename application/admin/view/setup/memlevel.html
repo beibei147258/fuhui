@@ -1,0 +1,170 @@
+{include file="head" /}
+{include file="menu" /}
+<link rel="stylesheet" href="__ADMIN__/element/css/index.css">
+<style>
+    .el-dialog__body{
+        padding: 0 20px;
+    }
+
+    .el-alert{
+        margin: 20px 0;
+    }
+
+    .el-form {
+        margin: 30px;
+    }
+
+    .el-form .el-form-item {
+        margin-bottom: 6px;
+    }
+    .el-form .el-form-item .el-input{
+        width: 200px;
+    }
+    .el-form .el-form-item .member{
+        float: left;
+        margin-right: 20px;
+    }
+    .el-form .el-upload__input {
+        display: none;
+    }
+
+    .upload-pre-item {
+        width: 120px;
+        height: 120px;
+        border: 1px solid red;
+        text-align: center;
+        line-height: 120px;
+    }
+
+    img[src=""], img:not([src]), .el-upload-list--text{
+        display: none;
+    }
+
+    .el-upload-dragger {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .el-form-item__content {
+        line-height: 30px;
+    }
+</style>
+<section id="main-content">
+    <section class="wrapper">
+        <div id="app">
+            <el-alert title="会员等级" type="warning" :closable="false"></el-alert>
+            <el-button type="primary" size="mini" icon="el-icon-plus" @click="addMem">填加会员等级</el-button>
+            <el-form ref="form" :model="form">
+                <el-col v-for="(item, index) in data">
+                    <el-form-item>
+                        <el-button class="member" type="danger" icon="el-icon-delete" circle @click="dropMem(index)"></el-button>
+                        <el-input class="member" v-model="form[index]['name']" @input="change()"></el-input>
+                        <el-upload
+                                class="upload-demo member"
+                                drag
+                                action="#"
+                                :before-upload="function(file){return uploadFile(file, index)}"
+                                multiple>
+                            <i class="el-icon-plus"></i>
+                        </el-upload>
+                        <el-link v-if="item.src" class="member" :href="item.src" target="_blank">
+                            <el-image :src="item.src" style="width: 160px; height: 40px"></el-image>
+                        </el-link>
+                    </el-form-item>
+                </el-col>
+                <el-col>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit">提交</el-button>
+                    </el-form-item>
+                </el-col>
+            </el-form>
+        </div>
+    </section>
+</section>
+{include file="foot" /}
+<script src="__ADMIN__/element/js/vue.js"></script>
+<script src="__ADMIN__/element/js/index.js"></script>
+<script src="__ADMIN__/element/js/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            form: {},
+            data: [],
+        },
+        methods: {
+            init() {
+                let t = this;
+                axios.post('MemLevelInit')
+                    .then(function (res) {
+                        t.data = [];     //管理配置时减少个数，局部刷新不能同步，所以先给个空值
+                        res.data !== 1 ? Object.values(res.data).forEach((item, index) => {
+                            t.$set(t.data, index, item)
+                            t.$set(t.form, index, item)
+                        }) : t.data = [];
+                    })
+                    .catch(function (error) {
+                    });
+            },
+            //自定义上传图片
+            uploadFile(file, index) {
+                let t = this, isImage = false, formData, config;
+                let imageType = file.type;
+                let isLt2M = file.size / 1024 / 1024 < 2;
+                isImage = imageType != 'image/jpeg' && imageType != 'image/jpg' && imageType != 'image/png' && imageType != 'image/gif' ? false : true;
+                if (!isImage) {
+                    return t.$message({message: '上传头像图片只能是 JPG/PNG/JPEG 格式!', type: 'error'});
+                }
+                if (!isLt2M) {
+                    return t.$message({message: '图片最大不能超过2M!', type: 'error'});
+                }
+                formData = new FormData();
+                formData.append('file', file);
+                config = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+                axios.post('upload', formData, config).then(res => {
+                    res.data === -1 ? t.$message({message: '上传失败，请重新上传', type: 'error'}) : (t.$message({
+                        message: '上传成功',
+                        type: 'success'
+                    }), t.form[index].src = t.data[index].src = res.data);
+                })
+            },
+            addMem(){
+                let t = this;
+                axios.post("addMemLevel").then(function () {
+                    t.$message({message: '填加成功', type: 'success'}), t.init();
+                })
+            },
+            dropMem(i){
+                let t = this;
+                axios.post("dropMemLevel", {index: i}).then(function (res) {
+                    res.data === 1 ? t.$message({message: '删除成功', type: 'success'}) : t.$message({message: '删除失败', type: 'error'});
+                    t.init();
+                })
+            },
+            onSubmit() {
+                let t = this;
+                Object.values(t.form).forEach((item)=>{
+                    if(item.name === ''){
+                        return t.$message({message: '会员名不能为空', type: 'error'});
+                    }
+                })
+                axios.post("editMemLevel", t.form).then(function (res) {
+                    res.data === 1 ? t.$message({message: '修改成功', type: 'success'}) : t.$message({message: '修改失败', type: 'error'});
+                    t.init();
+                })
+            },
+            change() {
+                this.$forceUpdate()
+            }
+        },
+        created() {
+            let t = this;
+            t.init();
+        }
+    })
+</script>

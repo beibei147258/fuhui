@@ -1,0 +1,160 @@
+{include file="comhead" /}
+<link rel="stylesheet" href="/static/index/css/common.css"/>
+<style>
+    body {
+        background: #110e1f;
+        overflow: auto
+    }
+
+    .f_box_motifypwd {
+        background: #111723;
+        color: #fff;
+        width: 100%;
+        text-align: center
+    }
+
+    .f_box_motifypwd .f_content {
+        display: flex;
+        flex-direction: column
+    }
+
+    .f_box_motifypwd .f_content div {
+        display: flex;
+        flex-direction: row;
+        height: 1.333333rem;
+        line-height: 1.333333rem;
+        font-size: .4rem;
+        border-bottom: .026667rem solid #666
+    }
+
+    .f_box_motifypwd .f_content div label {
+        flex: 1;
+        padding-left: .4rem;
+        text-align: left
+    }
+
+    .f_box_motifypwd .f_content div input {
+        flex: 2;
+        font-size: .4rem;
+        background: none;
+        padding-right: .4rem;
+        border: none;
+        outline: none;
+        color: #fff
+    }
+
+    .f_box_motifypwd .f_content div input ::-webit-input-placeholder {
+        color: #000
+    }
+
+    .f_box_motifypwd .f_content button {
+        margin: .4rem .266666rem;
+        height: 1.333333rem;
+        font-size: .4rem;
+        border-radius: .266666rem;
+        background: #c73131;
+        color: #fff
+    }
+
+    .f_box_motifypwd .f_content button:active {
+        background: #ff4d4d
+    }
+
+    .f_box_motifypwd .f_content .t_note {
+        border: none
+    }
+
+    .f_box_motifypwd .f_content .t_note p {
+        margin-left: .4rem;
+        color: red
+    }
+
+    .f_box_motifypwd .f_content .t_note p span {
+        color: red
+    }
+</style>
+<body style="font-size: 16px;">
+<div class="tj-spinner-mask j_t_start" style="display: none;">
+    <img class="j_loading" src="" alt="">
+</div>
+<div id="app">
+    <div class="box">
+        <div class="jun-content">
+            <div class="f_box_motifypwd">
+                <div class="t_header">
+                    <span><img src="/public/jpg/goback.png" alt="" onClick="javascript:history.back()"></span>
+                    <span><i>信息修改</i></span>
+                </div>
+                <div class="f_content">
+                    <div>
+                        <label for="oldpwd">旧登录密码</label>
+                        <input type="password" placeholder="请输入登录密码" onfocus="this.placeholder=''"
+                               onblur="this.placeholder='请输入登录密码'" id="oldpwd">
+                    </div>
+                    <div>
+                        <label for="newpwd">新登录密码</label>
+                        <input type="password" placeholder="请输入新密码" onfocus="this.placeholder=''"
+                               onblur="this.placeholder='请输入新密码'" id="newpwd">
+                    </div>
+                    <div>
+                        <label for="surepwd">确认密码</label>
+                        <input type="password" placeholder="请确认密码" onfocus="this.placeholder=''"
+                               onblur="this.placeholder='请确认密码'" id="surepwd">
+                    </div>
+                    <div>
+                        <label for="newpwd">提现密码</label>
+                        <input type="password" placeholder="请输入新密码" onfocus="this.placeholder=''"
+                               onblur="this.placeholder='请输入新密码'" id="newpwd1">
+                    </div>
+                    <div>
+                        <label for="surepwd">确认提现密码</label>
+                        <input type="password" placeholder="请确认提现密码" onfocus="this.placeholder=''"
+                               onblur="this.placeholder='请确认密码'" id="surepwd1">
+                    </div>
+                    <div class="t_note">
+                        <p>
+                            <span>注：</span>
+                            如不修改则留空
+                        </p>
+                    </div>
+                    <button id="tj">确认提交</button>
+                </div>
+            </div>
+        </div>
+        {include file="footer" /}
+    </div>
+</div>
+</body>
+</html>
+<script src="/static/layer/layer.js"></script>
+<script type="text/javascript">
+    $('#tj').click(function () {
+        oldpwd = $('#oldpwd').val();
+        newpwd = $('#newpwd').val();
+        surepwd = $('#surepwd').val();
+        newpwd1 = $('#newpwd1').val();
+        surepwd1 = $('#surepwd1').val();
+        if (oldpwd == "") {
+            layer.msg("请输入旧密码");
+            return false;
+        }
+        if (newpwd != surepwd) {
+            layer.msg("两次密码输入不一样");
+            return false;
+        }
+        if (newpwd1 != surepwd1) {
+            layer.msg("两次提现密码输入不一样");
+            return false;
+        }
+        $.post('/index/index/moditypwd', {oldpwd: oldpwd, newpwd: newpwd, txpwd: newpwd1}, function (res) {
+            if (res == '2') {
+                layer.msg('旧密码输入错误');
+            } else if (res == 3) {
+                layer.msg('请正确输入新密码');
+            } else {
+                layer.msg('修改成功');
+                window.location.href = '/index/index/member';
+            }
+        })
+    })
+</script>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta name="keywords" content="">
+    <meta content="caibaojian" name="author">
+    <title>{$conf.web_name?$conf.web_name:'福汇FXCM交易中心'}</title>
+    <link rel="stylesheet" href="/static/index/css/common.css"/>
+    <style>
+        body {
+            background: #110e1f;
+            overflow: auto
+        }
+
+        li select {
+            vertical-align: middle;
+            -webkit-font-smoothing: initial;
+            font-family: arial;
+            color: #fdbe19;
+            background: transparent;
+            border: 1px solid #fdbe19;
+        }
+
+        .f_box_addbank {
+            flex: 1;
+            color: #fff;
+            width: 100%;
+            display: flex;
+            flex-direction: column
+        }
+
+        .f_box_addbank .f_content {
+            flex: 1;
+            overflow: scroll;
+            -webkit-overflow-scrolling: touch
+        }
+
+        .f_box_addbank .f_content ul {
+            display: flex;
+            flex-direction: column
+        }
+
+        .f_box_addbank .f_content ul li {
+            display: flex;
+            flex-direction: row;
+            text-align: left;
+            height: 1.333333rem;
+            line-height: 1.333333rem;
+            padding-left: .533333rem;
+            border-bottom: .026667rem solid #96959a;
+            position: relative
+        }
+
+        .f_box_addbank .f_content ul li label {
+            flex: 2
+        }
+
+        .f_box_addbank .f_content ul li span {
+            flex: 4;
+            position: relative
+        }
+
+        .f_box_addbank .f_content ul li span input {
+            background: none;
+            color: #fff;
+            font-size: .4rem;
+            height: 100%
+        }
+
+        .f_box_addbank .f_content ul li span input ::-webkit-input-placeholder {
+            color: #96959a
+        }
+
+        .f_box_addbank .f_content ul li span input.validate {
+            width: 60%
+        }
+
+        .f_box_addbank .f_content ul li span input#code {
+            right: 0;
+            top: 0;
+            float: right;
+            margin: 0;
+            width: 2.133333rem;
+            height: 1rem;
+            font-family: Arial, 宋体;
+            font-style: italic;
+            color: #000;
+            border: 0;
+            padding: .026667rem .04rem;
+            letter-spacing: .04rem;
+            font-weight: bolder;
+            background-color: #ececec;
+            position: absolute;
+            right: 3%;
+            top: 49%;
+            transform: translateY(-50%)
+        }
+
+        .f_box_addbank .f_content ul li span input#btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            float: right;
+            margin: 1.5% 4% auto auto;
+            width: 2.133333rem;
+            height: 1rem;
+            font-size: .333333rem;
+            color: #136cea;
+            background: none
+        }
+
+        .f_box_addbank .f_content ul li span input#btn:active {
+            color: #ff2a00
+        }
+
+        .f_box_addbank .f_content ul li .select {
+            position: relative;
+            flex: 4
+        }
+
+        .f_box_addbank .f_content ul li .select button {
+            background: none;
+            color: #fff;
+            font-size: .4rem;
+            height: 100%;
+            width: 100%;
+            text-align: left
+        }
+
+        .f_box_addbank .f_content ul li .select i {
+            position: absolute;
+            bottom: 0;
+            left: .666667rem;
+            width: 0;
+            height: 0;
+            border-right: .266667rem solid transparent;
+            border-bottom: .266667rem solid #fff;
+            border-left: .266667rem solid transparent
+        }
+
+        .f_box_addbank .f_content ul li .select .select_box {
+            position: absolute;
+            top: 100%;
+            left: -1rem;
+            border-radius: .133333rem;
+            background: #fff;
+            min-height: 1rem;
+            max-height: 4rem;
+            width: 70%;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+            z-index: 1000
+        }
+
+        .f_box_addbank .f_content ul li .select .select_box .j_li {
+            color: #000;
+            font-size: .4rem;
+            height: .8rem;
+            line-height: .8rem;
+            outline: none;
+            border: none;
+            text-align: center
+        }
+
+        .f_box_addbank .f_content ul li .select .select_box .t_active {
+            background: #ccc
+        }
+
+        .f_box_addbank .f_content ul .l_cityName {
+            display: block;
+            width: 100%
+        }
+
+        .f_box_addbank .f_content ul .l_cityName label {
+            width: 30%;
+            float: left
+        }
+
+        .f_box_addbank .f_content ul .l_cityName div {
+            width: 70%;
+            height: 100%;
+            float: left
+        }
+
+        .f_box_addbank .f_content ul .l_cityName div select {
+            width: 33%;
+            height: 100%;
+            padding: 0 1%;
+            float: left;
+            font-size: .4rem;
+            color: #999;
+            background: #110e1f;
+            box-sizing: border-box
+        }
+
+        .f_box_addbank .f_content ul .l_cityName div select option {
+            color: #999;
+            font-size: .2rem;
+            text-align: center
+        }
+
+        .f_box_addbank .f_content ul .l_cityNameEle {
+            width: 100%
+        }
+
+        .f_box_addbank .f_content ul .l_cityNameEle label {
+            flex: 2;
+            float: left
+        }
+
+        .f_box_addbank .f_content ul .l_cityNameEle div {
+            margin-right: .696668rem;
+            flex: 4;
+            float: left;
+            position: relative
+        }
+
+        .f_box_addbank .f_content ul .l_cityNameEle div .el-cascader, .f_box_addbank .f_content ul .l_cityNameEle div .el-cascader .el-input {
+            width: 100%;
+            height: 100%
+        }
+
+        .f_box_addbank .f_content ul .l_cityNameEle div .el-cascader .el-input .el-input__inner {
+            width: 100%;
+            height: 100%;
+            border: none
+        }
+
+        .f_box_addbank .f_content ul .l_cityNameEle div .el-cascader .el-input .el-input__suffix {
+            width: .666667rem;
+            height: .666667rem;
+            position: absolute;
+            top: 50%;
+            margin-top: -.333333rem;
+            right: 3%
+        }
+
+        .f_box_addbank .f_content ul .l_cityNameEle div .el-cascader .el-input .el-input__suffix .el-input__suffix-inner {
+            width: 100%;
+            height: 100%
+        }
+
+        .f_box_addbank .f_content ul .l_cityNameEle div .el-cascader .el-input .el-input__suffix .el-input__icon {
+            font-size: .4rem
+        }
+
+        .f_box_addbank .f_content ul .l_cityNameEle div .el-cascader .el-cascader__label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: .4rem;
+            line-height: 1.333333rem;
+            color: #96959a;
+            padding-left: .2rem
+        }
+
+        .f_box_addbank .f_content ul .l_cityNameEle div .el-cascader .el-cascader__label span {
+            color: #96959a
+        }
+
+        .f_box_addbank .f_content div.sure {
+            height: 2.333333rem;
+            margin-top: .4rem;
+            position: relative
+        }
+
+        .f_box_addbank .f_content div.sure .el-button {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0 auto;
+            width: 90%;
+            height: 50%;
+            font-size: .4rem;
+            border-radius: .133333rem;
+            background-color: #c73131
+        }
+
+        .f_box_addbank .f_content div.sure {
+            height: 2.333333rem;
+            margin-top: .4rem;
+            position: relative;
+        }
+
+        .el-button--danger {
+            color: #fff;
+            background-color: #f56c6c;
+            border-color: #f56c6c
+        }
+
+        .el-button--danger:focus, .el-button--danger:hover {
+            background: #f78989;
+            border-color: #f78989;
+            color: #fff
+        }
+
+        .el-button--danger.is-active, .el-button--danger:active {
+            background: #dd6161;
+            border-color: #dd6161;
+            color: #fff
+        }
+
+        .el-button--danger:active {
+            outline: 0
+        }
+
+        .el-button--danger.is-disabled, .el-button--danger.is-disabled:active, .el-button--danger.is-disabled:focus, .el-button--danger.is-disabled:hover {
+            color: #fff;
+            background-color: #fab6b6;
+            border-color: #fab6b6
+        }
+
+        .el-button--danger.is-plain {
+            color: #f56c6c;
+            background: #fef0f0;
+            border-color: #fbc4c4
+        }
+
+        .el-button--danger.is-plain:focus, .el-button--danger.is-plain:hover {
+            background: #f56c6c;
+            border-color: #f56c6c;
+            color: #fff
+        }
+
+        .el-button--danger.is-plain:active {
+            background: #dd6161;
+            border-color: #dd6161;
+            color: #fff;
+            outline: 0
+        }
+
+        .el-button--danger.is-plain.is-disabled, .el-button--danger.is-plain.is-disabled:active, .el-button--danger.is-plain.is-disabled:focus, .el-button--danger.is-plain.is-disabled:hover {
+            color: #f9a7a7;
+            background-color: #fef0f0;
+            border-color: #fde2e2
+        }
+    </style>
+</head>
+<body style="font-size: 16px;">
+<div class="tj-spinner-mask j_t_start" style="display: none;">
+    <img class="j_loading" src="/public/jpg/loading.gif" alt="">
+</div>
+<div id="app">
+    <div class="box">
+        <div class="jun-content">
+            <div class="f_box_addbank">
+                <div class="t_header">
+                    <span><img src="/public/jpg/goback.png" alt="" onClick="javascript:history.back()"></span>
+                    <span><i>添加提现银行卡</i></span>
+                </div>
+                <form id="formid" rel="form" method="post" id="formid"/>
+                    <div class="f_content">
+                        <ul>
+                            <li>
+                                <span>选择银行
+                                    <select name="bankno">
+                                        {volist name="banks" id="vo"}
+                                        <option label="{$vo.bank_nm}" value="{$vo.id}" {if $bank['bankno'] == $vo['id']}selected="selected" {/if} >{$vo.bank_nm}</option>
+                                        {/volist}
+                                    </select>
+                                </span>
+                            </li>
+                            <li>
+                                <span>省份
+                                    <select name="provinceid" id="provinceid">
+                                        {volist name="province" id="vo"}
+                                        <option value="{$vo.id}" {if $bank['provinceid'] == $vo['id']}selected="selected" {/if}>{$vo.name}</option>
+                                        {/volist}
+                                    </select>
+                                </span>
+                            </li>
+                            <li>
+                                <span>市名
+                                    <select name="cityno" id="city">
+                                       <option value="{$bank['cityno']}">{:getarea($bank['cityno'])}</option>
+                                    </select>
+                                </span>
+                            </li>
+                            <li>
+                                <span>开户地址
+                                    <input type="text" placeholder="请选择开户地址" name="address" value="{$bank.address}">
+                                </span>
+                            </li>
+                            <li>
+                                <span>收款姓名
+                                    <input type="text" placeholder="请输入持卡人姓名" name="accntnm" value="{$bank.accntnm}">
+                                </span>
+                            </li>
+                            <li>
+                                <span>银行卡号
+                                <input type="text" onkeyup="this.value=this.value.replace(/\D/g, '');"
+                                       placeholder="请输您的银行卡号" name="accntno" value="{$bank.accntno}">
+                                </span>
+                            </li>
+                            <input type="hidden" class="uid" name="uid" value="$uid">
+                        </ul>
+                        <div class="sure">
+                            <button onclick="return editcon(this.form)" class="el-button el-button--danger">
+                                <span>确认添加</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {include file="footer" /}
+    </div>
+</div>
+</body>
+</html>
+<script src="/static/layer/layer.js"></script>
+<script type="text/javascript">
+    //iOS Web APP中点击链接跳转到Safari 浏览器新标签页的问题 devework.com
+    //stanislav.it/how-to-prevent-ios-standalone-mode-web-apps-from-opening-links-in-safari
+    if (("standalone" in window.navigator) && window.navigator.standalone) {
+        var noddy, remotes = false;
+        document.addEventListener('click', function (event) {
+            noddy = event.target;
+            while (noddy.nodeName !== "A" && noddy.nodeName !== "HTML") {
+                noddy = noddy.parentNode;
+            }
+            if ('href' in noddy && noddy.href.indexOf('http') !== -1 && (noddy.href.indexOf(document.location.host) !== -1 || remotes)) {
+                event.preventDefault();
+                document.location.href = noddy.href;
+            }
+        }, false);
+    }
+
+    // H5 plus事件处理
+    function plusReady() {
+        // 隐藏滚动条
+        plus.webview.currentWebview().setStyle({scrollIndicator: 'none'});
+        // Android处理返回键
+        plus.key.addEventListener('backbutton', function () {
+            if (window.location.hash == '#/home/homepage') {
+                ('iOS' == plus.os.name) ? plus.nativeUI.confirm('确认退出？', function (e) {
+                    if (e.index > 0) {
+                        plus.runtime.quit();
+                    }
+                }, 'HelloH5', ['取消', '确定']) : (confirm('确认退出？') && plus.runtime.quit());
+            } else {
+                window.history.back();
+            }
+        }, false);
+    }
+    if (window.plus) {
+        plusReady();
+    } else {
+        document.addEventListener('plusready', plusReady, false);
+    }
+
+    function editcon(form) {
+        var bankno = form.bankno.value;
+        var provinceid = form.provinceid.value;
+        var cityno = form.cityno.value;
+        var address = form.address.value;
+        var accntnm = form.accntnm.value;
+        var accntno = form.accntno.value;
+        if (!bankno) {
+            layer.msg('请选择银行');
+            return false;
+        }
+        if (!provinceid) {
+            layer.msg('请选择省份');
+            return false;
+        }
+        if (!cityno) {
+            layer.msg('请选择城市');
+            return false;
+        }
+        if (!address) {
+            layer.msg('请输入支行地址');
+            return false;
+        }
+        if (!accntnm) {
+            layer.msg('请输入开户名称');
+            return false;
+        }
+        if (!accntno) {
+            layer.msg('请输入卡号');
+            return false;
+        }
+        if (accntno.length < 16) {
+            layer.msg('请输入正确卡号格式');
+            return false;
+        }
+        $.post("{:Url('index/add_bank')}", $('#formid').serialize(), function (res) {
+            if (res.type == 1) {
+                layer.msg(res.data, {icon: 1, time: 1000}, function () {
+                    window.location.href = "{:Url('index/bankcard')}";
+                });
+            } else if (res.type == -1) {
+                layer.msg(res.data, {icon: 2});
+            }
+        })
+        return false;
+    }
+
+    $('#provinceid').change(function () {
+        var pid = $(this).val();
+        if (pid != '') {
+            var url = "{:url('getarea')}" + "?id=" + pid;
+            $.get(url, function (data) {
+                $("#city").html(data);
+            });
+        } else {
+            $("#city").html('<option value="">请选择城市</option>');
+        }
+    });
+</script>

@@ -1,0 +1,231 @@
+{include file="comhead" /}
+<link rel="stylesheet" href="/static/index/css/common.css"/>
+<link rel="stylesheet" href="/static/index/css/iconfont.css"/>
+<style>
+    body {
+        background: #110e1f;
+        overflow: auto
+    }
+
+    .f_box_bank {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        color: #fff;
+        width: 100%;
+        text-align: center
+    }
+
+    .f_box_bank .t_header {
+        height: 1.2rem;
+        background-color: #181f2f;
+        display: flex;
+        flex-direction: row;
+        position: relative
+    }
+
+    .f_box_bank .t_header span:first-child {
+        width: 10%;
+        position: relative
+    }
+
+    .f_box_bank .t_header span:first-child img {
+        display: block;
+        width: .293333rem;
+        height: .493333rem;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%)
+    }
+
+    .f_box_bank .t_header ul {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        width: 4rem;
+        height: 100%;
+        display: flex;
+        flex-direction: row
+    }
+
+    .f_box_bank .t_header ul li {
+        flex: 1;
+        height: .8rem;
+        float: left;
+        line-height: .8rem;
+        margin-top: .266667rem;
+        border: .026667rem solid #ccc
+    }
+
+    .f_box_bank .t_header ul li:first-child {
+        border-top-left-radius: .4rem;
+        border-bottom-left-radius: .4rem
+    }
+
+    .f_box_bank .t_header ul li:last-child {
+        border-top-right-radius: .4rem;
+        border-bottom-right-radius: .4rem
+    }
+
+    .f_box_bank .t_header ul .t_active {
+        background-color: #4a77de
+    }
+
+    .f_box_bank .f_content {
+        flex: 1
+    }
+
+    .f_box_bank .f_content ul {
+        display: flex;
+        flex-direction: column
+    }
+
+    .f_box_bank .f_content ul li {
+        height: 1.333333rem;
+        line-height: 1.333333rem;
+        padding-left: 1.066666rem;
+        text-align: left;
+        background: #111723;
+        border-bottom: .026667rem solid #000;
+        position: relative
+    }
+
+    .f_box_bank .f_content ul li span {
+        margin-right: 1.333333rem
+    }
+
+    .f_box_bank .f_content ul li i {
+        display: none
+    }
+
+    .f_box_bank .f_content ul .t_active i {
+        display: block;
+        width: .6rem;
+        height: .6rem;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsBAMAAADsqkcyAAAAMFBMVEVMaXH////////////////////////////////////////////////////////////6w4mEAAAAD3RSTlMAgMBAMPBwEKBgUJCwINAha+BcAAAAjklEQVQoz2NgwAsKBcFAHE24/z8Y/CBONbHASQkDqACF1//HAL+AwizGGMCBgXrABWRFAZCYAGLATQ4F4qsHGBjYvgEZrAEw4f9AbK/AwMD4Ecjg/zAqPMSF/RWgUYwqzOUATRCownBAmnA9XDjeAEk4/wGMtf+HIBxI/J8AE+ZBzgq/ERodEarFLuBJ2gCy6Ivp7aNj2gAAAABJRU5ErkJggg==) no-repeat;
+        position: absolute;
+        top: 50%;
+        right: 5%;
+        transform: translate(5%, -50%)
+    }
+
+    .f_box_bank .f_content .addbank {
+        height: 1.333333rem;
+        margin-top: .4rem;
+        position: relative
+    }
+
+    .f_box_bank .f_content .addbank .el-button {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0 auto;
+        width: 90%;
+        height: 80%;
+        font-size: .4rem;
+        border-radius: .133333rem;
+        background-color: #c73131
+    }
+
+    .top {
+        width: 98%;
+        height: 2.7rem;
+        background: linear-gradient(to right, #e2616b, #e64d7b);
+        border-radius: 0.5rem;
+        margin: 0 auto;
+    }
+
+    .top p {
+        padding: 0 0.5rem;
+    }
+
+    .tbs {
+        width: 1.6rem;
+        height: 1.6rem;
+        background-color: #F6D0D3;
+        color: #cc0011;
+        line-height: 1.6rem;
+        border-radius: 1rem;
+        font-size: 0.8rem;
+        float: left;
+        margin: 0.5rem 0rem;
+        margin-left: 0.3rem;
+        text-align: left;
+    }
+</style>
+<body style="font-size: 16px;">
+<div id="app">
+    <div class="box">
+        <div class="jun-content">
+            <div class="f_box_bank">
+                <div class="t_header">
+                    <span>
+                        <img src="/public/jpg/goback.png" alt="" onclick="javascript:history.back()">
+                    </span>
+                    <ul>
+                        <li class="j_t_span t_active ">银行账户信息</li>
+                    </ul>
+                </div>
+                {if ( $count >0) }
+                <div class="top" style="margin-top: 0.5rem;">
+                    <p class="tbs">
+                        <span style="margin-left: -0.1rem;">{:substr($bankcards.province,0,3)}</span></p>
+                    <p style="margin-top: 0.3rem;"><span style="float: left;">{$bankcards['province']}</span>
+                        <span style="float: right; color: #FFBC0C;">余额:{$userinfo.usermoney} 元</span></p>
+                    <p class="" style="float:right;margin-top: 0.8rem;font-size: 18px;"><span></span>账号{:substr($bankcards.accntno,0,4)}***********{:substr($bankcards.accntno,15,19)}
+                    </p>
+
+
+                </div>
+                <article style="margin-top: 0.3rem;padding-left: 0.3rem;">
+                	<span style="font-size: 20px;color: #ebac34;text-align: left;width: 98%;">
+                		<i class="iconfont icon--8"></i> <span style="color: #FFFFFF;">真实姓名：</span>{$bankcards['accntnm']}</span>
+                </article>
+                <article style="margin-top: 0.3rem;padding-left: 0.3rem;">
+                	<span style="font-size: 20px;color: #ebac34;text-align: left;width: 98%;">
+                		<i class="iconfont icon--19"></i> <span style="color: #FFFFFF;">开户银行：</span>{$bankcards['province']}</span>
+                </article>
+                <article style="margin-top: 0.3rem;padding-left: 0.3rem;">
+                	<span style="font-size: 20px;color: #ebac34;text-align: left;width: 98%;">
+                		<i class="iconfont icon--19"></i> <span style="color: #FFFFFF;">开户地址：</span>{$bankcards['address']}</span>
+                </article>
+                <div>
+                    <a href="/index/index/update_bank">
+                        <button type="button" class="el-button el-button--danger"
+                                style="width: 90%;margin-top: 0.5rem;"><!----><!---->
+                            <span>修改银行账户信息</span>
+                        </button>
+                    </a>
+                </div>
+                {else /}
+                <div>
+                    <a href="/index/index/add_bank" class="">
+                        <button type="button" class="el-button el-button--danger"
+                                style="width: 90%;margin-top: 0.5rem;"><!----><!---->
+                            <span>绑定提现银行卡</span>
+                        </button>
+                    </a>
+                </div>
+                {/if}
+            </div>
+        </div>
+        {include file="footer" /}
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    var head = document.getElementsByTagName('body')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = '' + parseInt(Math.random() * 10000);
+    head.appendChild(script);
+    script.onload = function () {
+        document.querySelector('.j_t_start').style.display = 'none';
+    }
+</script>

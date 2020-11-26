@@ -1,0 +1,173 @@
+{include file="comhead" /}
+<link rel="stylesheet" href="/static/index/css/common.css"/>
+<style type="text/css">
+    .t_box_applicant {
+        flex: 1;
+        display: flex;
+        flex-direction: column
+    }
+
+    .t_box_applicant .t_con_applicant {
+        flex: 1;
+        overflow-y: auto;
+        background-color: #111723
+    }
+
+    .t_box_applicant .t_con_applicant div {
+        height: 1.333333rem;
+        font-size: .4rem;
+        border-bottom: .026667rem solid #666;
+        position: relative
+    }
+
+    .t_box_applicant .t_con_applicant div label {
+        margin-left: .4rem;
+        color: #fff;
+        width: 2.666667rem
+    }
+
+    .t_box_applicant .t_con_applicant div input {
+        margin-top: .133333rem;
+        height: 1.066667rem;
+        font-size: .4rem;
+        text-indent: .266667rem;
+        background-color: #111723;
+        border: none;
+        outline: none;
+        color: #fff
+    }
+
+    .t_box_applicant .t_con_applicant div #phone {
+        margin-left: .7rem;
+        text-indent: .316667rem
+    }
+
+    .t_box_applicant .t_con_applicant div #username {
+        margin-left: 1.6rem
+    }
+
+    .t_box_applicant .t_con_applicant div #pcode {
+        margin-left: .4rem
+    }
+
+    .t_box_applicant .t_con_applicant div #code {
+        float: right;
+        margin: 0;
+        width: 2.133333rem;
+        height: 1rem;
+        font-family: Arial, 宋体;
+        font-style: italic;
+        color: #000;
+        border: 0;
+        padding: .026667rem .04rem;
+        letter-spacing: .04rem;
+        font-weight: bolder;
+        background-color: #ececec;
+        position: absolute;
+        right: 2%;
+        top: 50%;
+        transform: translateY(-50%)
+    }
+
+    .t_box_applicant .t_con_applicant div #messcode {
+        margin-left: .4rem;
+        text-indent: .366667rem
+    }
+
+    .t_box_applicant .t_con_applicant div #t_btn {
+        position: absolute;
+        top: 50%;
+        right: 2%;
+        transform: translateY(-50%);
+        width: 2.133333rem;
+        height: 1rem;
+        color: #0e75ec;
+        font-size: .32rem;
+        background: #111723;
+        text-align: center;
+        margin: 0
+    }
+
+    .t_box_applicant .t_con_applicant .t_applicant_btn {
+        height: 1.2rem;
+        position: relative;
+        margin-top: .533333rem;
+        border: none
+    }
+
+    .t_box_applicant .t_con_applicant .t_applicant_btn button {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        width: 9.36rem;
+        height: 1.2rem;
+        background-color: #c73131;
+        border: none;
+        font-size: .4rem;
+        color: #fff;
+        border-radius: .133333rem;
+        outline: none
+    }
+</style>
+<body style="font-size: 16px;">
+<div class="tj-spinner-mask j_t_start" style="display: none;">
+    <img class="j_loading" src="loading.gif" alt="">
+</div>
+<div id="app">
+    <div class="box"><!---->
+        <div class="jun-content">
+            <div class="t_box_applicant">
+                <div class="t_header"><span><img src="/public/jpg/goback.png"
+                                                 alt="" onClick="javascript:history.back()"></span>
+                    <span><i>申请经纪人</i></span></div>
+                <div class="t_con_applicant">
+                    <div><label for="username">姓名</label> <input type="text" placeholder="请输入姓名" id="username"
+                                                                 onfocus="this.placeholder=''"
+                                                                 onblur="this.placeholder='请输入姓名'"></div>
+                    <div><label for="phone">手机号码</label> <input type="number" id="phone" disabled="disabled"></div>
+                    <div><label for="pcode">图形验证码</label> <input type="text" placeholder="请输入验证码" id="pcode"
+                                                                 onfocus="this.placeholder=''"
+                                                                 onblur="this.placeholder='请输入验证码'"> <input
+                            type="button" id="code" title="点击更换验证码" value="9369"></div>
+                    <div><label for="messcode">短信验证码</label><input type="text" id="messcode" placeholder="请输入短信验证码"
+                                                                   onfocus="this.placeholder=''"
+                                                                   onblur="this.placeholder='请输入短信验证码'">
+                        <button id="t_btn">发送验证码</button>
+                    </div>
+                    <div class="t_applicant_btn">
+                        <button>确认提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {include file="footer" /}
+    </div>
+</div>
+<div tabindex="-1" role="dialog" aria-modal="true" aria-label="提示" class="el-message-box__wrapper"
+     style="z-index: 2001; display: none;">
+    <div class="el-message-box el-message-box--center">
+        <div class="el-message-box__header">
+            <div class="el-message-box__title"><!----><span>提示</span></div><!----></div>
+        <div class="el-message-box__content"><!---->
+            <div class="el-message-box__message"><p>请登录</p></div>
+            <div class="el-message-box__input" style="display: none;">
+                <div class="el-input"><!----><input autocomplete="off" placeholder="" type="text" rows="2"
+                                                    validateevent="true" class="el-input__inner"><!----><!----><!---->
+                </div>
+                <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+            </div>
+        </div>
+        <div class="el-message-box__btns">
+            <button type="button" class="el-button el-button--default el-button--small is-round" style="display: none;">
+                <!----><!----><span>
+          取消
+        </span></button>
+            <button type="button" class="el-button el-button--default el-button--small is-round el-button--primary ">
+                <!----><!----><span>
+          确定
+        </span></button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

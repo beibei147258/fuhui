@@ -1,0 +1,89 @@
+后台基本设置可填加app下载地址：http://t.urls3.cn/_XQDHjP
+宝塔面板直接复制数据库文件 #1036 – Table is read only”问题
+终端执行 /www/server/mysql/bin/mysqladmin -u root -p flush-tables
+
+element vue
+
+input有时不能输入 this.$forceUpdate()
+
+<el-input v-model="form[item.name]" @input="change()"></el-input> 
+change(){
+                this.$forceUpdate()
+            }
+
+多个文件上传  使用before-upload ，传递索引值
+html：
+<el-col v-for="item in data" v-if="item.type == 3">
+                    <el-form-item :label="item.title">
+                        <el-upload
+                                class="upload-demo"
+                                drag
+                                action="#"
+                                :before-upload="function(file){return uploadFile(file, item.name)}"
+                                multiple>
+                            <i class="el-icon-upload"></i>
+                            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                        </el-upload>
+                        <a :href="imgUrl[item.name]" title="查看大图" target="_blank">
+                            <img :src="imgUrl[item.name]" width="200" height="100" class="avatar">
+                        </a>
+                    </el-form-item>
+                </el-col>
+
+js：
+//自定义上传图片
+            uploadFile(file, name){
+                let t = this, isImage = false, formData, config;
+                let imageType = file.type;
+                let isLt2M = file.size / 1024 / 1024 < 2;
+                isImage = imageType != 'image/jpeg' && imageType != 'image/jpg' && imageType != 'image/png' ? false : true;
+                if (!isImage) {
+                    return t.$message({message: '上传头像图片只能是 JPG/PNG/JPEG 格式!', type: 'error'});
+                }
+                if (!isLt2M) {
+                    return t.$message({message: '图片最大不能超过2M!', type: 'error'});
+                }
+                formData = new FormData();
+                formData.append('file',file);
+                config = {
+                    headers: {
+                        'Content-Type':'multipart/form-data'
+                    }
+                }
+                axios.post('upload', formData, config).then(res=>{
+                    res.data === -1 ? t.$message({message: '上传失败，请重新上传', type: 'error'}) : (t.$message({message: '上传成功', type: 'success'}), t.imgUrl[name] = res.data);
+                })
+            },
+
+php：
+public function upload()
+    {
+        $file = request()->file('file');
+        $url = Env::get('root_path') . 'public' . DS . 'uploads';
+        $dirName = date('Ymd');
+        if (!file_exists($url . DS . $dirName)) {
+            mkdir($url . DS . $dirName, 777, true);
+        }
+        $info = $file->move($url);
+        if ($info) {
+            return '/public' . DS . 'uploads/' . $info->getSaveName();
+        } else {
+            return -1;
+        }
+    }
+
+宝塔定时任务：
+脚本内容：
+#!/bin/bash
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
+export PATH
+step=3
+for (( i = 0; i < 60; i=(i+step) )); do
+curl -sS --connect-timeout 10 -m 60 'https://test.nc0m4tr.cn/switch.php'
+echo "----------------------------------------------------------------------------"
+endDate=`date +"%Y-%m-%d %H:%M:%S"`
+echo "★[$endDate] Successful"
+echo "----------------------------------------------------------------------------"
+sleep $step
+done
+exit 0

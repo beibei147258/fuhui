@@ -1,0 +1,63 @@
+{include file="comhead" /}
+<link rel="stylesheet" href="/static/index/css/common.css"/>
+<style type="text/css">
+    .f_box_winvoucher {
+        flex: 1;
+        position: relative;
+        color: #fff;
+        background-color: #111723;
+        text-align: center
+    }
+
+    .f_box_winvoucher .f_isnull {
+        margin: 40% auto
+    }
+
+    .f_box_winvoucher .f_isnull div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column
+    }
+
+    .f_box_winvoucher .f_isnull div img {
+        height: 6.666667rem
+    }
+
+    .f_box_winvoucher .f_isnull div span {
+        margin-top: 10%
+    }
+</style>
+<body style="font-size: 16px;">
+<div class="tj-spinner-mask j_t_start" style="display: none;">
+    <img class="j_loading" src="/public/jpg/loading.gif" alt="">
+</div>
+<div id="app">
+    <div class="box">
+        <div class="jun-content">
+            <div class="f_box_winvoucher">
+                <div class="t_header">
+                    <span><img src="/public/jpg/goback.png" alt="" onClick="javascript:history.back()"></span>
+                    <span><i>客服</i></span>
+                </div>
+                <div class="f_isnull">
+                    <span>如遇到问题请联系在线客服咨询</span>
+                </div>
+            </div>
+        </div>
+        {include file="footer" /}
+    </div>
+</div>
+<script type="text/javascript">
+    var head = document.getElementsByTagName('body')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = './dist/build.js?' + parseInt(Math.random() * 10000);
+    head.appendChild(script);
+    script.onload = function () {
+        document.querySelector('.j_t_start').style.display = 'none';
+    }
+</script>
+<script type="text/javascript" src="./dist/build.js?7765"></script>
+</body>
+</html>

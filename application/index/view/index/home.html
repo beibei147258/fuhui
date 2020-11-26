@@ -1,0 +1,492 @@
+{include file="comhead" /}
+<link rel="stylesheet" href="/static/index/css/common.css"/>
+<style type="text/css">
+    .dk-spinner-mask {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: #fff;
+        opacity: .4;
+        z-index: 2090
+    }
+
+    .dk-spinner-three-bounce.dk-spinner {
+        position: absolute;
+        top: 53%;
+        left: 47%;
+        background-color: none !important;
+        z-index: 2099;
+        margin: 0 auto;
+        width: 70px;
+        text-align: center
+    }
+
+    .dk-spinner-three-bounce div {
+        width: .24rem;
+        height: .24rem;
+        background-color: #1ab394;
+        border-radius: 100%;
+        display: inline-block;
+        -webkit-animation: dk-threeBounceDelay 1.4s infinite ease-in-out;
+        animation: dk-threeBounceDelay 1.4s infinite ease-in-out;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both
+    }
+
+    .dk-spinner-three-bounce .dk-bounce1 {
+        -webkit-animation-delay: -.32s;
+        animation-delay: -.32s
+    }
+
+    .dk-spinner-three-bounce .dk-bounce2 {
+        -webkit-animation-delay: -.16s;
+        animation-delay: -.16s
+    }
+
+    @-webkit-keyframes dk-threeBounceDelay {
+        0%, 80%, to {
+            -webkit-transform: scale(0);
+            transform: scale(0)
+        }
+        40% {
+            -webkit-transform: scale(1);
+            transform: scale(1)
+        }
+    }
+
+    @keyframes dk-threeBounceDelay {
+        0%, 80%, to {
+            -webkit-transform: scale(0);
+            transform: scale(0)
+        }
+        40% {
+            -webkit-transform: scale(1);
+            transform: scale(1)
+        }
+    }
+
+    .box {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+
+    #header .zp-slide {
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    #header .zp-slide > ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 1600%;
+        transition: all 0.3s;
+        transform: translate3d(0px, 0px, 0px);
+    }
+
+    #header .zp-slide > ul > li {
+        float: left;
+    }
+
+    #header .zp-slide img {
+        max-width: 100%;
+        max-height: 100%;
+        width: 100%;
+        height: 3.5rem;
+    }
+
+    [class^=zp-slide-] {
+        display: block;
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        top: 50%;
+        margin-top: -15px;
+        left: 30px;
+        opacity: 0.5;
+    }
+
+    [class^=zp-slide-]:hover {
+        opacity: 1;
+    }
+
+    #header .zp-slide-right {
+        left: auto;
+        right: 30px;
+    }
+
+    #header .jun-carousel {
+        /*    height: 2.8rem;
+            overflow: hidden*/
+        width: 100%;
+        margin-top: -1px;
+        border-bottom: 1px solid #666;
+    }
+
+    #header .jun-carousel .carousel-item {
+        height: 3.466667rem;
+        width: 100%;
+        background: #fff;
+        font-size: .8rem;
+        color: red
+    }
+
+    #header .jun-carousel .carousel-item .jun-son-img {
+        height: 100%;
+        width: 100%
+    }
+
+    #header .jun-carousel .el-carousel__container {
+        width: 90%;
+        margin: 0 auto
+    }
+
+    #header .jun-carousel .el-carousel__item h3 {
+        color: #475669;
+        font-size: 14px;
+        opacity: .75;
+        line-height: 200px;
+        margin: 0
+    }
+
+    #header .jun-carousel .el-carousel__item:nth-child(2n) {
+        background-color: #99a9bf
+    }
+
+    #header .jun-carousel .el-carousel__item:nth-child(odd) {
+        background-color: #d3dce6
+    }
+
+    .box #header .jun-carousel, .box #header .t_lineher {
+        background-color: #222629;
+    }
+
+    .box .t_lineher {
+        width: 100%;
+        height: 1.066667rem;
+        display: flex;
+        flex-direction: row
+    }
+
+    .box .t_lineher li {
+        font-size: .373333rem;
+        color: #fff;
+        text-align: center;
+        line-height: 1.066667rem
+    }
+
+    .box .t_lineher li:first-child {
+        flex: 1;
+        text-align: left;
+        text-indent: .8rem
+    }
+
+    .box .t_lineher li:nth-child(2) {
+        width: 2.4rem
+    }
+
+    .box .t_lineher li:nth-child(3) {
+        width: 2.6rem;
+        text-align: left;
+        text-indent: .533333rem
+    }
+
+    .box .t_con_home {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        width: 100%;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .box .t_con_home .jun-empty {
+        height: 1.55rem
+    }
+
+    .box .t_con_home ul {
+        height: 1.55rem;
+        /* width: 94%;*/
+        margin: 0 auto;
+        display: flex;
+        flex-direction: row;
+        background-size: 100% 100%;
+        /*border-radius: .266667rem*/
+    }
+
+    .box .t_con_home ul li:first-child {
+        flex: 1;
+        display: flex;
+        flex-direction: row
+    }
+
+    .box .t_con_home ul li:first-child span {
+        width: 1.866667rem;
+        position: relative
+    }
+
+    .box .t_con_home ul li:first-child span img {
+        display: block;
+        width: 1.333333rem;
+        height: 1.333333rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -24%)
+    }
+
+    .box .t_con_home ul li:first-child div {
+        width: 2rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center
+    }
+
+    @media screen and (min-width: 374px) {
+        .box .t_con_home ul li:first-child div {
+            width: 2.8rem;
+        }
+    }
+
+    @media screen and (max-width: 320px) {
+        .box .t_con_home ul li:first-child div {
+            width: 1.5rem;
+        }
+    }
+
+    .box .t_con_home ul li:first-child div span {
+        width: 100%;
+        color: #fff;
+        font-size: .32rem;
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap
+    }
+
+    .box .t_con_home ul li:first-child div span:nth-child(2) {
+        line-height: .6rem;
+        color: #fff
+    }
+
+    .box .t_con_home ul li:first-child div span:last-child {
+        font-size: .266667rem;
+        color: #9b8ea5
+    }
+
+    .box .t_con_home ul li:nth-child(2) {
+        width: 2.4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+
+    .box .t_con_home ul li:nth-child(2) span {
+        display: block;
+        height: .8rem;
+        width: 80%;
+        background-color: #26a848;
+        border-radius: .133333rem;
+        line-height: .8rem;
+        text-align: center;
+        color: #fff
+    }
+
+    .box .t_con_home ul li:nth-child(3) {
+        width: 1.66rem;
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+
+    .box .t_con_home ul li:nth-child(3) span {
+        display: block;
+        width: 1.2rem;
+        height: .533333rem;
+        background-color: #d73741;
+        font-size: .3rem;
+        line-height: .533333rem;
+        text-align: center;
+        color: #fff;
+        border-radius: .133333rem
+    }
+
+    .box .t_con_home ul li:nth-child(4) {
+        width: .6rem;
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+
+    .box .t_con_home ul li:nth-child(4) i {
+        display: block;
+        width: .213333rem;
+        height: .386667rem;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAdCAMAAACUsxyNAAAAUVBMVEVMaXH////////////////////////////////////////////////////////////////////////////////////////////////////////JzkR1AAAAGnRSTlMADr/Ga8ARamkLvsgMDWfDt0xoEsr1bAmgIGFaF2gAAABpSURBVBjTfdFHEoAgDEBREVHB3jX3P6hZwseR5ZuQWshxFskTkSqBXaWJ4QoqayybVWlj8SXFOGY2luIDa9XdZ+YxiZn4q3eUYVZZYnkU7p8I5mAV9sFOOQun5T64Me4023p2l+xyvO0LF6sLfF4IPUQAAAAASUVORK5CYII=) no-repeat;
+        background-size: cover
+    }
+
+    .skip, .step0, .step1, .step2, .step4, .step5, .step6, .step7, .step8 {
+        display: none
+    }
+
+    .skip {
+        position: absolute;
+        top: 1%;
+        right: 1%;
+        background: #000;
+        color: #fff;
+        padding: 20px 40px;
+        border: 1px solid #fff;
+        border-radius: 100px;
+        font-size: .3rem;
+        z-index: 1000
+    }
+</style>
+<body style="font-size: 16px;">
+<div class="tj-spinner-mask j_t_start" style="display: none;">
+    <img class="j_loading" src="/public/jpg/loading.gif" alt="">
+</div>
+<div class="box"><!---->
+    <div id="header">
+        <div class="zp-slide">
+            <ul>
+                {volist name="bannerImg" id="vo"}
+                <li><a href="javascript:void(0);"><img src="{$vo}"/></a></li>
+                {/volist}
+            </ul>
+            <a href="javascript:void(0)" style="display: none;" class="zp-slide-left">
+                <img src="img/zp-left.png">
+            </a>
+            <a href="javascript:void(0)" style="display: none;" class="zp-slide-right">
+                <img src="img/zp-right.png">
+            </a>
+        </div>
+        <div class="jun-carousel">
+            <marquee><font color=red>{$conf['web_gg']}</font></marquee>
+        </div>
+        <ul class="t_lineher">
+            <li>热门产品</li>
+            <li>最新</li>
+            <li>状态</li>
+        </ul>
+    </div>
+    <div class="t_con_home">
+        {volist name="pro" id="vo" key='k'}
+        <ul style="background-image: url('/public/jpg/bg.png'); background-repeat: no-repeat;">
+            <li>
+                <a href="javascript:void(0);">
+                    <span><img src="{$vo['img']}" alt="" data-src="{$vo['img']}" lazy="loaded"></span>
+                </a>
+                <div>
+                    <i class="identifying" style="display: none;">{$vo['procode']}</i>
+                    <span>{$vo['Name']}</span>
+                    <span>STOSX</span>
+                </div>
+            </li>
+            <li><span style="background-color: rgb(38, 168, 72);" id="p_{$vo['pid']}">{$vo['Price']}</span></li>
+            {if condition="$vo.is_deal eq 1"}
+            <li>
+                <a href="/index/goods/goods?pid={$vo['pid']}">
+                    <span class="t_status" id="pd_{$vo['pid']}">交易中</span>
+                </a>
+            </li>
+            <li><i></i></li>
+            {else /}
+            <li><span class="t_status" style="background: rgb(58, 142, 230);">休市</span></li>
+            <li><i></i></li>
+            {/if}
+        </ul>
+        {/volist}
+        <div style="display: none;">
+            <div class="dk-spinner-mask"></div>
+            <div class="dk-spinner dk-spinner-three-bounce">
+                <div class="dk-bounce1"></div>
+                <div class="dk-bounce2"></div>
+                <div class="dk-bounce3"></div>
+            </div>
+        </div>
+        <div class="skip">跳过</div>
+    </div>
+    {include file="footer" /}
+</div>
+</body>
+<script src="/static/index/js/zpSlide.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/public/js/inline.js"></script>
+<script type="text/javascript">
+    (function () {
+        var dw = document.createElement("script");
+        dw.src = "https://sc.dierna.com/ipm.js?550648638208999424"
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(dw, s);
+    })()
+    $(function () {
+        $('#header .zp-slide').zpSlide({
+            original: 1,     	//414px小屏幕，默认显示1个
+            xs: 1,           	//640px小屏幕，默认显示2个，当前自定义显示1个
+            sm: 1,           	//768px中屏幕，默认显示3个，当前自定义显示2个
+            md: 1,           	//1024px中屏幕，默认显示4个，当前自定义显示3个
+            lg: 1,          		//1280px大屏幕，默认显示5个，当前自定义显示3个
+            autoPlay: true, 	    //自动播放，默认true，当前定义true
+            intervalTime: 4000   //自动播放时间，默认3秒，当前定义4秒
+        });
+        //轮播图大小
+
+    })
+
+    function getdt() {
+        $.get('/index/index/ajaxdata', '', function (datajson) {
+            var pro = eval('(' + datajson + ')');
+            $.each(pro, function (k, v) {
+                id = '#' + 'p_' + v.pid;
+                pdid = '#' + 'pd_' + v.pid;
+                $(id).html(v.Price); //全部的价格进行变动
+                if (v.is_rise == 2) {
+                    $(id).css('background', 'rgb(255, 1, 5)');
+                } else {
+                    $(id).css('background', 'rgb(38, 168, 72)');
+                }
+                if (v.is_deal == 0) {
+                    $(pdid).css('background', 'rgb(58, 142, 230)');
+                    $(pdid).html("休市");
+                } else {
+                    $(pdid).html("交易中");
+                }
+            })
+        });
+    }
+
+    window.setInterval("getdt()", 3000);
+    $(function () {
+        $.ajax({
+            type: "get",
+            url: "{:url('index/ggkg')}",
+            dataType: "json",
+            success: function (data) {
+                if (data.status == 1) {
+                    //信息框
+                    layer.open({
+                        title: '公告',
+                        content: data.message
+                        , btn: '我知道了'
+                    });
+
+                }
+            }
+        });
+    });
+</script>

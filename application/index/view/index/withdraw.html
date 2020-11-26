@@ -1,0 +1,360 @@
+{include file="comhead" /}
+<link rel="stylesheet" href="/static/index/css/common.css">
+<style>
+    body {
+        background: #110e1f;
+        overflow: auto;
+    }
+
+    .t_box_withdraw {
+        flex: 1;
+        display: flex;
+        flex-direction: column
+    }
+
+    .t_box_withdraw .t_con_withdraw {
+        flex: 1;
+        background-color: #111723;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch
+    }
+
+    .t_box_withdraw .t_con_withdraw div {
+        height: 1.333333rem;
+        font-size: .4rem;
+        border-bottom: .026667rem solid #666;
+        position: relative;
+        display: flex;
+        flex-direction: row
+    }
+
+    .t_box_withdraw .t_con_withdraw div label {
+        display: inline-block;
+        margin-left: .5rem;
+        color: #ebac34;
+        width: 2.666667rem;
+        font-size: .4rem;
+        height: 100%;
+        line-height: 1.333333rem;
+        float: left;
+    }
+
+    .t_box_withdraw .t_con_withdraw div:first-child span, .t_box_withdraw .t_con_withdraw div:nth-child(2) span {
+        display: block;
+        width: .533333rem;
+        height: .533333rem;
+        margin: 0;
+        text-align: center;
+        line-height: .533333rem;
+        position: absolute;
+        right: 20%;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 50%;
+        color: #fff;
+        background: #576684;
+        font-size: .4rem;
+        font-family: \\5FAE\8F6F\96C5\9ED1
+    }
+
+    .t_box_withdraw .t_con_withdraw div:first-child span {
+        background: #cd6f24
+    }
+
+    .t_box_withdraw .t_con_withdraw div input, .t_box_withdraw .t_con_withdraw div select {
+        margin-top: .133333rem;
+        height: 1.066667rem;
+        font-size: .5rem;
+        text-indent: .266667rem;
+        background-color: #111723;
+        border: none;
+        outline: none;
+        color: #fff;
+        width: 60%;
+        margin-left: 0.2rem;
+    }
+
+    .t_box_withdraw .t_con_withdraw div #code {
+        float: right;
+        font-family: Arial, 宋体;
+        font-style: italic;
+        color: #000;
+        border: 0;
+        padding: .026667rem .04rem;
+        letter-spacing: .04rem;
+        font-weight: bolder;
+        background-color: #ececec;
+        right: 5%
+    }
+
+    .t_box_withdraw .t_con_withdraw div #code, .t_box_withdraw .t_con_withdraw div #t_btn {
+        margin: 0;
+        width: 2.133333rem;
+        height: 1rem;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%)
+    }
+
+    .t_box_withdraw .t_con_withdraw div #t_btn {
+        right: 6.8%;
+        color: #0e75ec;
+        font-size: .32rem;
+        background: #111723;
+        text-align: center
+    }
+
+    .t_box_withdraw .t_con_withdraw div .select {
+        position: relative;
+        width: 60%;
+        float: left;
+        margin-left: .266667rem
+    }
+
+    .t_box_withdraw .t_con_withdraw div .select button {
+        background: none;
+        color: #fff;
+        font-size: .4rem;
+        height: 100%;
+        width: 100%;
+        text-align: left
+    }
+
+    .t_box_withdraw .t_con_withdraw div .select i {
+        position: absolute;
+        bottom: 0;
+        left: .666667rem;
+        width: 0;
+        height: 0;
+        border-right: .266667rem solid transparent;
+        border-bottom: .266667rem solid #fff;
+        border-left: .266667rem solid transparent
+    }
+
+    .t_box_withdraw .t_con_withdraw div .select .select_box {
+        position: absolute;
+        top: 100%;
+        left: -1rem;
+        border-radius: .133333rem;
+        background: #fff;
+        min-height: 1rem;
+        max-height: 4rem;
+        width: 86%;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        z-index: 1000
+    }
+
+    .t_box_withdraw .t_con_withdraw div .select .select_box .j_li {
+        width: 100%;
+        color: #000;
+        font-size: .4rem;
+        height: .8rem;
+        line-height: .8rem;
+        outline: none;
+        border: none;
+        text-align: center;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap
+    }
+
+    .t_box_withdraw .t_con_withdraw div .select .select_box .t_active {
+        background: #ccc
+    }
+
+    .t_box_withdraw .t_con_withdraw .t_withdraw_btn {
+        height: 2rem;
+        position: relative;
+        margin-top: .533333rem;
+        border: none
+    }
+
+    .t_box_withdraw .t_con_withdraw .t_withdraw_btn button {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        height: 1.2rem;
+        background-color: #fdbe19;
+        border: none;
+        font-size: .4rem;
+        color: #000000;
+        border-radius: .133333rem;
+        outline: none;
+    }
+
+    .t_box_withdraw .t_con_withdraw .notice {
+        border: none;
+        height: 2rem;
+        margin-top: .8rem
+    }
+
+    .t_box_withdraw .t_con_withdraw .notice p {
+        color: #fff;
+        font-size: .32rem;
+        text-indent: .4rem;
+        margin-bottom: .133333rem
+    }
+
+    .jun-empty {
+        height: 1.6rem;
+        width: 1px
+    }
+
+    .top{
+        width: 98%;
+        height: 2.7rem;
+        background: linear-gradient(to right, #e2616b , #e64d7b);
+        border-radius: 0.5rem ;
+        margin: 0 auto;
+    }
+    .top p{
+        padding: 0 0.5rem;
+    }
+    .tbs{
+        width: 1.6rem; height: 1.6rem;background-color: #F6D0D3; color: #cc0011;
+        line-height: 1.6rem;
+        border-radius: 1rem;
+        font-size: 0.8rem;
+        float: left;
+        margin: 0.5rem 0rem;
+        margin-left: 0.3rem;
+        text-align: left;
+    }
+</style>
+<body style="font-size: 16px;">
+<div class="tj-spinner-mask j_t_start" style="display: none;">
+    <img class="j_loading" src="/public/jpg/loading.gif" alt="">
+</div>
+<div id="app">
+    <div class="box">
+        <div class="jun-content">
+            <div class="t_box_withdraw">
+                <div class="t_header">
+                    <span><img src="/public/jpg/goback.png" alt="" onClick="javascript:history.back()"></span>
+                    <span><i>提现</i></span>
+                </div>
+                {if $conf['keep_card'] == 1}
+                <div class="top" style="margin-top: 0.5rem;">
+                    <p class="tbs">
+                        <span style="margin-left: -0.1rem;">{:substr($bankinfo.province,0,3)}</span></p>
+                    <p style="margin-top: 0.3rem;" ><span style="float: left; color: #FFFFFF;">{$bankinfo['province']}</span>
+                        <span  style="float: right;  color: #FFBC0C;">余额:{$userinfo.usermoney} 元</span></p>
+                    <p class="" style="float: right; margin-top: 0.6rem;font-size: 18px;color: #FFFFFF;"><span>帐号</span>{:substr($bankinfo.accntno,0,4)}***********{:substr($bankinfo.accntno,15,19)}</p>
+                </div>
+                {/if}
+                    <div class="t_con_withdraw">
+                        {if $conf['keep_card'] == 0}
+                        <div>
+                            <label>银行类型</label>
+                            <select name="bankno" id="bankno" class="bankno">
+                                <option value="">请选择</option>
+                                {volist name="banks" id="vo"}
+                                <option label="{$vo.bank_nm}" value="{$vo.id}" {if isset($mybank) && $mybank['bankno'] == $vo['id']}selected="selected" {/if} >{$vo.bank_nm}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                        <div>
+                            <label>省份</label>
+                            <select id="provinceid" name="provinceid">
+                                <option value="">请选择</option>
+                                {volist name="province" id="vo"}
+                                <option  value="{$vo.id}">{$vo.name}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                        <div>
+                            <label>市名</label>
+                            <select id="cityno" name="cityno">
+                                {if isset($mybank)}
+                                <option value="{$mybank.cityno}">{:getarea($mybank['cityno'])}</option>
+                                {else/}
+                                <option value="">请选择</option>
+                                {/if}
+                            </select>
+                        </div>
+                        <div>
+                            <label>开户地址</label>
+                            <input type="text" id="address" name="address" value="" autocomplete="off" placeholder='请输入开户地址'>
+                        </div>
+                        <div>
+                            <label>开户姓名</label>
+                            <input type="text" id="accntnm" name="accntnm" value="" autocomplete="off" placeholder='请输入开户姓名'>
+                        </div>
+                        <div>
+                            <label>银行卡号</label>
+                            <input type="text" id="accntno" onkeyup="this.value=this.value.replace(/\D/g, '');"  name="accntno" value="" autocomplete="off" placeholder='请输入银行卡号'>
+                        </div>
+                        {/if}
+                        <div>
+                            <label>提现金额</label>
+                            <input type="number" id="price" name="price" autocomplete="off" placeholder='请输入提现金额'>
+                        </div>
+                        <div>
+                            <label>提现密码</label>
+                            <input type="password" id="txpwd" name="txpwd" autocomplete="off" placeholder='请输入提现密码'>
+                        </div>
+                        <div class="t_withdraw_btn">
+                            <button id="sub">确认提交</button>
+                        </div>
+                        <div class="jun-empty"></div>
+                    </div>
+            </div>
+        </div>
+        {include file="footer" /}
+    </div>
+</div>
+</body>
+</html>
+<script src="/static/layer/layer.js"></script>
+<script type="text/javascript">
+    $('#provinceid').change(function(){
+        var pid = $(this).val();
+        if(pid != ''){
+            var url = "{:url('getarea')}"+"?id="+pid;
+            $.get(url,function(data){
+                $("#cityno").html(data);
+            });
+        }else{
+            $("#cityno").html('<option value="">请选择城市</option>');
+        }
+    });
+    $("#sub").click(function () {
+        var keepCard = "{$conf['keep_card']}", params = {};
+        if(keepCard == 0){
+            var bankno = $('#bankno').val();
+            var provinceid = $('#provinceid').val();
+            var cityno = $('#cityno').val();
+            var address = $('#address').val();
+            var accntnm = $('#accntnm').val();
+            var accntno = $('#accntno').val();
+            if(!bankno){layer.msg('请选择银行');return false;}
+            if(!provinceid){layer.msg('请选择省份');return false;}
+            if(!cityno){layer.msg('请选择城市');return false;}
+            if(!address){layer.msg('请输入支行地址');return false;}
+            if(!accntnm){layer.msg('请输入开户姓名');return false;}
+            if(!accntno){layer.msg('请输入银行卡号');return false;}
+            if(accntno.length<16){layer.msg('请输入正确卡号格式');return false;}
+            params = {bankno:bankno, provinceid:provinceid, cityno:cityno, address:address, accntnm:accntnm, accntno:accntno}
+        }
+        var price = $('#price').val();
+        var txpwd = $('#txpwd').val();
+        if(!price){layer.msg('请输入提现金额');return false;}
+        if(!txpwd){layer.msg('请输入提现密码');return false;}
+        params.price = price;
+        params.txpwd = txpwd;
+        $.post('/index/index/withdraw',params,function(resdata){
+            layer.msg(resdata.data);
+            if(resdata.type == 1){
+                setTimeout('gourl()',1000);
+            }
+        })
+    })
+    function gourl() {
+        //修改之后
+        window.location.href='/index/index/member';
+    }
+
+</script>

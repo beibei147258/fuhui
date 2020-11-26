@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+<script type="text/javascript">
+//iOS Web APP中点击链接跳转到Safari 浏览器新标签页的问题 devework.com
+//stanislav.it/how-to-prevent-ios-standalone-mode-web-apps-from-opening-links-in-safari
+if(("standalone" in window.navigator) && window.navigator.standalone){
+    var noddy, remotes = false;
+    document.addEventListener('click', function(event) {
+        noddy = event.target;
+        while(noddy.nodeName !== "A" && noddy.nodeName !== "HTML") {
+            noddy = noddy.parentNode;
+        }
+        if('href' in noddy && noddy.href.indexOf('http') !== -1 && (noddy.href.indexOf(document.location.host) !== -1 || remotes))
+        {
+            event.preventDefault();
+            document.location.href = noddy.href;
+        }
+    },false);
+}
+</script>
+
+        <title>支付</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>[支付]</div>     
+        <p>请打款到卡号：6212264000051890362 </p>
+        <p>开户行：中国工商银行</p>
+        <p>用户名：曾纪栋</p>
+        <p>支付完成请添加客服人员微信：xxxxxxxx</p>
+        <p>二维码：</p>
+        <div><img id="picture_look" src="/public/uploads/zhifu.jpg" /></div>
+         
+    </body>
+</html>

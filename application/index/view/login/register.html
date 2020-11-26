@@ -1,0 +1,129 @@
+{include file="head" /}
+<style>.sign_up {height: 60%;}</style>
+<body ng-app="starter" ng-controller="AppCtrl" class="grade-a platform-browser platform-win32 platform-ready">
+<ion-nav-bar class="bar-stable headerbar nav-bar-container hide" nav-bar-transition="ios" nav-bar-direction="none" nav-swipe="">
+    <div class="nav-bar-block" nav-bar="cached">
+        <ion-header-bar class="bar-stable headerbar bar bar-header" align-title="center">
+            <div class="title title-center header-item"></div>
+        </ion-header-bar>
+    </div>
+    <div class="nav-bar-block" nav-bar="active">
+        <ion-header-bar class="bar-stable headerbar bar bar-header" align-title="center">
+            <div class="title title-center header-item"></div>
+        </ion-header-bar>
+    </div>
+</ion-nav-bar>
+<ion-nav-view class="view-container" nav-view-transition="ios" nav-view-direction="none" nav-swipe="">
+    <ion-view hide-nav-bar="true" class="signin-view pane" state="signin" nav-view="active" style="opacity: 1; transform: translate3d(0%, 0px, 0px);">
+        <div><a><img src="/public/jpg/goback.png" alt="" onclick="javascript:history.back()" style="width: .2rem;height: .3rem;margin: 0.1rem 0.15rem;"></a></div>
+        <form method="post" id="formid" autocomplete="off">
+            <div class="sign_up">
+                <div class="sign_up_content">
+                    <ul class="sign_up_list">
+                        <li class="newinput" ng-show="show_signup_code">
+                            <span class="input-text">姓&nbsp;&nbsp;&nbsp;&nbsp;名:</span>
+                            <input type="text" placeholder="请填写真实姓名" name="nickname" class="nickname ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required" maxlength="16">
+                        </li>
+                        <li class="newinput" ng-show="show_signup_code">
+                            <span class="input-text">账&nbsp;&nbsp;&nbsp;&nbsp;号:</span>
+                            <input type="text" onkeyup="this.value=this.value.replace(/[^A-Za-z0-9_]/, '');" placeholder="字母或数字组成" name="username" class="username ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required" maxlength="16">
+                        </li>
+                        <li class="newinput">
+                            <span class="input-text">登录密码:</span>
+                            <input type="password" placeholder="密码" name="upwd" class="ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required" maxlength="16">
+                        </li>
+                        <li class="newinput">
+                            <span class="input-text">确认密码:</span>
+                            <input type="password" placeholder="确认密码" name="upwd2" class="ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required" maxlength="16">
+                        </li>
+                        <li class="newinput">
+                            <span class="input-text">提现密码:</span>
+                            <input type="password" placeholder="提现密码" name="txpwd" class="ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required" minlength="6" maxlength="8">
+                        </li>
+                        {if $conf.reg_type == 1}
+                        <li class="newinput">
+                            <span class="input-text">推荐码:</span>
+                            {if $code > 0}
+                            <input value="{$code}" class="sign_code ng-pristine ng-untouched ng-valid ng-empty" name="oid" readonly/>
+                            {else/}
+                            <input type="number" onkeyup="this.value=this.value.replace(/\D/g, '');" maxlength="8" class="sign_code ng-pristine ng-untouched ng-valid ng-empty" placeholder="请输入推荐码" name="oid"/>
+                            {/if}
+                        </li>
+                        {/if}
+                    </ul>
+                    <button class="newbutton sign_up_btn" onclick="return checkform(this.form);">注册登陆</button>
+                </div>
+            </div>
+        </form>
+        <div class="signin-footer">
+            <a href="{:url('login/login')}">已有帐户，登陆</a>
+        </div>
+        <div class="spinner-view hide">
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+            <div class="message ng-binding" ng-class="{ 'fadein' : message }"></div>
+        </div>
+    </ion-view>
+</ion-nav-view>
+<div class="backdrop"></div>
+<div class="ionic_toast">
+    <div class="toast_section" ng-class="ionicToast.toastClass" ng-style="ionicToast.toastStyle" ng-click="hideToast()" style="display: none; opacity: 0;">
+        <span class="ionic_toast_close"><i class="ion-android-close toast_close_icon"></i></span>
+        <span ng-bind-html="ionicToast.toastMessage" class="ng-binding"></span>
+    </div>
+</div>
+</body>
+</html>
+<script src="__HOME__/js/lk/user.js"></script>
+<script>
+    function checkform(form) {
+        var regType = "{$conf['reg_type']}";
+        var username = form.username.value;
+        var upwd = form.upwd.value;
+        var upwd2 = form.upwd2.value;
+        var txpwd = form.txpwd.value;
+        if (!username) {
+            layer.msg('请输入账号');
+            return false;
+        }
+
+        if (!upwd) {
+            layer.msg('请输入登录密码');
+            return false;
+        }
+
+        if (!upwd2) {
+            layer.msg('请再次输入登录密码');
+            return false;
+        }
+
+        if (upwd.length < 6 || upwd2.length < 6) {
+            layer.msg('密码长度大于6位');
+            return false;
+        }
+
+        if (upwd != upwd2) {
+            layer.msg('两次输入密码不同');
+            return false;
+        }
+        if (!txpwd) {
+            layer.msg("请输入提现密码！");
+            return false;
+        }
+
+        if (regType == 1) {
+            var oid = form.oid.value;
+            if (!oid) {
+                layer.msg("请输入推荐码！");
+                return false;
+            }
+        }
+        var data = $('#formid').serialize();
+        var formurl = "{:Url('login/register')}";
+        var locurl = "{:Url('index/index')}";
+        WPpost(formurl, data, locurl);
+        return false;
+    }
+</script>

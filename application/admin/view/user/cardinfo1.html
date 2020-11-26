@@ -1,0 +1,153 @@
+{include file="head" /}
+
+<!-- 编辑器引入开始 -->
+<link href="/static/public/umeditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="/static/public/umeditor/third-party/jquery.min.js"></script>
+<script type="text/javascript" src="/static/public/umeditor/third-party/template.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/public/umeditor/umeditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/public/umeditor/umeditor.min.js"></script>
+<script type="text/javascript" src="/static/public/umeditor/lang/zh-cn/zh-cn.js"></script>
+
+<!-- 编辑器引入结束 -->
+
+{include file="menu" /}
+
+
+<!--main content start-->
+     <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+              <!-- page start-->
+              <div class="row">
+                  <div class="col-lg-8">
+                      <!--widget start-->
+                      <aside class="profile-nav alt green-border">
+                          <section class="panel">
+                              
+                     
+                              <div class="panel-body bio-graph-info">
+							   <h1> 修改用户</h1>
+							<form class="form-horizontal" role="form" action="{:Url('user/cardedit')}" method="post" id="formid">
+                              <div class="form-horizontal">
+                                  
+                                  <div class="form-group">
+                                      <label class="col-lg-2 control-label">用户id：</label>
+                                      <div class="col-lg-6">
+											<input type="hidden" class="form-control" name = 'uid' value="{$uid}" >
+
+                                          <p class="control-label">{$uid}</p>
+                                      </div> 
+                                  </div> 
+									<hr>  
+                                  <div class="form-group">
+                                      <label class="col-lg-2 control-label">持卡人姓名：</label>
+                                      <div class="col-lg-6">
+									  <input type="text" class="form-control" name = 'accntnm' value="{$bank.accntnm}" >
+                                          <!-- <p class="control-label">{$bank.accntnm}</p> -->
+                                      </div>
+                                  </div>
+									<hr>
+                                  <div class="form-group">
+                                      <label class="col-lg-2 control-label">区域：</label>
+                                      <div class="col-lg-6">
+									   <input type="text" class="form-control"  value="{:getarea($bank['provinceid'])}  {:getarea($bank['cityno'])}" >
+                                          <!--p class="control-label">{:getarea($bank['provinceid'])}  {:getarea($bank['cityno'])}</p -->
+                                      </div>
+                                  </div>
+									<hr>
+                                  <div class="form-group">
+                                      <label class="col-lg-2 control-label">详细地址：</label>
+                                      <div class="col-lg-6">
+									   <input type="text" class="form-control" name="address"  value="{$bank.address}" >
+                                      </div>
+                                  </div>
+									<hr>
+                                  <div class="form-group">
+                                      <label class="col-lg-2 control-label">银行名称：</label>
+                                      <div class="col-lg-6">
+									  <select name="bankno" class=" bankno">
+										{volist name="banks" id="vo"}
+
+										<option label="{$vo.bank_nm}" value="{$vo.id}" {if isset($bank) && $bank['bankno'] == $vo['id']}selected="selected" {/if} >{$vo.bank_nm}</option>
+
+										{/volist}  
+
+										</select>
+									  <!-- <input type="text" class="form-control" name="bank_nm" value="{$bank.bank_nm}" > -->
+                                      </div>
+                                  </div>
+									<hr>
+                                  <div class="form-group">
+                                      <label class="col-lg-2 control-label">身份证：</label>
+                                      <div class="col-lg-6">
+									  <input type="text" class="form-control" name="sfz" value="{$bank.sfz}" >
+                                          <!-- <p class="control-label">{$bank.phone}</p> -->
+                                      </div>
+                                  </div> 
+									<hr>
+                                  <div class="form-group">
+                                      <label class="col-lg-2 control-label">银行卡号：</label>
+                                      <div class="col-lg-6">
+									   <input type="text" class="form-control" name="accntno"  value="{$bank.accntno}" >
+                                          <!-- <p class="control-label">{$bank.accntno}</p> -->
+                                      </div>
+                                  </div>
+								   
+									<hr>
+									 <div class="form-group">
+                                      <label class="col-lg-2 control-label">提取密码：</label>
+                                      <div class="col-lg-6">
+									   <input type="text" class="form-control" name="txpwd"  value="{$user.txpwd}" >
+                                          <!-- <p class="control-label">{$bank.accntno}</p> -->
+                                      </div>
+                                  </div>
+								   
+
+								 <div class="form-group">
+                                      <div class="col-lg-offset-2 col-lg-10">
+                                          <input type="submit" value="提交"  class="btn btn-success">
+                                           
+                                      </div>
+                                  </div>
+
+                              </form>
+
+                                  
+                              </div>
+
+
+
+                          </div>
+                     
+
+                          </section>
+                      </aside>
+                      <!--widget end-->
+                      
+                  </div>
+                 </div> 
+              
+                 
+              
+              <!-- page end-->
+           </section>
+      </section>
+      <!--main content end-->
+  </section>
+
+
+{include file="foot" /}
+<script>
+
+	function editcard(form){
+	  var data = $('#formid').serialize();
+
+	    $.post('/admin/user/cardedit',{data},function (res) {
+            layer.msg("修改成功");
+        });
+
+	    return false;
+	}
+
+
+</script>
